@@ -20,8 +20,8 @@ npm start
 
 ```
 cd client
-npm install
-npm start
+yarn install
+yarn start
 ```
 
 <br />
