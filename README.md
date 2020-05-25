@@ -2,8 +2,6 @@
 
 ## Tarkvaraarenduse praktika projekt
 
----
-
 ### Moodulite alla laadimine ja koodi käivitumine
 
 #### API käivitumine
