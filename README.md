@@ -1,0 +1,2 @@
+# yKool
+Tarkvaraarenduse praktika projekt
