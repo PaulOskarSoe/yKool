@@ -1,0 +1,50 @@
+html,
+body {
+  overflow: auto;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+.parent-container,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+.login-view-form {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  top: 20%;
+  text-align: center;
+  width: 850px;
+  background-color: white;
+  border-radius: 14px;
+  padding: 50px;
+  display: flex;
+}
+
+#login-view-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  opacity: 0.8;
+  /* Preserve aspet ratio */
+  min-width: 100%;
+  min-height: 100%;
+}
+
+#login-form-image {
+  width: 450px;
+  height: 400px;
+}
+
+.login-form-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 60px;
+}
