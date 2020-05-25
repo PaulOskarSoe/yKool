@@ -1,0 +1,26 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "API for yKool",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaikPython/yKool.git"
+  },
+  "author": "Paul Oskar Soe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaikPython/yKool/issues"
+  },
+  "homepage": "https://github.com/MaikPython/yKool#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.9.15",
+    "nodemon": "^2.0.4"
+  }
+}
