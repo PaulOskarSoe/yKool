@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardImg,
@@ -9,10 +9,16 @@ import {
   Button,
 } from "reactstrap";
 import BackGroundImage from "./../../assets/login_background.jpeg";
+import CourseModal from "./CourseModal.jsx";
 
 const CourseBox = ({ data }) => {
+  const [modal, setModal] = useState(false);
+
+  const toggle = () => setModal(!modal);
+
   return (
     <div className="dashboard-course-box">
+      <CourseModal modal={modal} toggle={toggle} />
       <Card>
         <CardImg
           top
@@ -27,7 +33,7 @@ const CourseBox = ({ data }) => {
             Some quick example text to build on the card title and make up the
             bulk of the card's content.
           </CardText>
-          <Button>Button</Button>
+          <Button onClick={() => setModal(true)}>Button</Button>
         </CardBody>
       </Card>
     </div>
