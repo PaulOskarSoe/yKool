@@ -12,7 +12,7 @@ const App = () => {
   return (
     <Router>
       <div className="parent-container">
-        {user && <Header setUser={setUser} />}
+        {user && <Header setUser={setUser}></Header>}
         <Route
           path="/"
           component={() => <LoginView setUser={setUser} user={user} />}
