@@ -1,10 +1,10 @@
 # yKool
 
-## Tarkvaraarenduse praktika projekt
+<br />
 
-### Moodulite alla laadimine ja koodi käivitumine
+## Moodulite alla laadimine ja koodi käivitumine
 
-#### API käivitumine
+### API käivitumine
 
 ---
 
@@ -14,7 +14,7 @@ npm install
 npm start
 ```
 
-#### Kliendi poole käivitumine
+### Kliendi poole käivitumine
 
 ---
 
@@ -22,6 +22,8 @@ npm start
 cd client
 npm start
 ```
+
+<br />
 
 ### API dokumentatsioon
 
