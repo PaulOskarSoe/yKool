@@ -1,8 +1,10 @@
 const express = require("express");
+const bcrypt = require("bcrypt");
 const router = express.Router();
+const passport = require("passport");
 
 const User = require("./../models/User");
-const bcrypt = require("bcrypt");
+// import { a/uthenticateUser } from "./helpers/user";
 
 router.post("/new_user", async (req, res) => {
   const { email, fullName, role, password } = req.body;
@@ -43,4 +45,33 @@ router.post("/new_user", async (req, res) => {
   }
 });
 
+const authenticateUser = function (req, res, next) {
+  passport.authenticate(
+    "local",
+    {
+      passReqToCallback: true,
+      failWithError: false,
+    },
+    (error, user, info) => {
+      console.log("user, info", user, info);
+      if (error) {
+        return res.status(500).json({ msg: "Something broke :/" });
+      } else if (!user) {
+        return res
+          .status((info || {}).code || 404)
+          .json({ message: (info || {}).message || "User not found" });
+      } else {
+        req.login(user, (err) => {
+          if (err) return res.status(500).json({ msg: "Login failed" });
+          // req.userDoc = user
+          return next();
+        });
+      }
+    }
+  )(req, res, next);
+};
+
+router.post("/login", authenticateUser, (req, res) => {
+  return res.json(req.user);
+});
 module.exports = router;

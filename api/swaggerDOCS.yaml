@@ -21,7 +21,7 @@ paths:
       tags:
         - course
       summary: Creates new course
-      operationId: addPet
+      operationId: addCourse
       consumes:
         - application/json
       produces:
@@ -41,19 +41,17 @@ paths:
     post:
       tags:
         - user
-      summary: Create user
-      description: This can only be done by the logged in user.
+      summary: Creates new user
+      description: All user fields must be required.
       operationId: createUser
       produces:
         - application/json
-        - application/xml
       parameters:
         - in: body
           name: body
           description: Created user object
           required: true
           schema:
-            $ref: "#/definitions/User"
       responses:
         default:
           description: successful operation

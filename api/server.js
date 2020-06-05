@@ -1,4 +1,6 @@
 require("dotenv").config();
+const passport = require("passport");
+const LocalStrategy = require("passport-local").Strategy;
 
 // init PORT && DB access key
 const PORT = process.env.PORT || 8080;
@@ -40,3 +42,7 @@ app.use("/api/v1/users", users);
 app.use("/api/v1/courses", courses);
 app.use("/api/v1/assignments", assignments);
 app.use("/api/v1/submissions", submissions);
+
+app.use(passport.initialize());
+app.use(passport.session());
+// Add the line below, which you're missing:
