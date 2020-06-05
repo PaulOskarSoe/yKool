@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 // 2 -> student
 
 const userSchema = new mongoose.Schema({
-  emil: { type: String, required: true },
+  email: { type: String, required: true },
   fullName: { type: String, required: true },
   hash: { type: String, required: true },
   role: { type: Number, required: true },
