@@ -10,7 +10,7 @@ export const CourseViewModal = (props) => {
       <ModalBody>{data.description}</ModalBody>
       <ModalFooter>
         <Button color="primary" onClick={() => toggleFn(false)}>
-          Tagase
+          Tagasi
         </Button>{" "}
       </ModalFooter>
     </Modal>
