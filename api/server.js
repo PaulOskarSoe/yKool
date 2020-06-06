@@ -1,6 +1,8 @@
 require("dotenv").config();
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const session = require("express-session");
+
 const User = require("./models/User");
 
 // init PORT && DB access key
@@ -26,7 +28,6 @@ passport.use(
     function (username, password, next) {
       User.checkPassword(username, password)
         .then((result = {}) => {
-          console.log("result: ", result);
           const user = result.user;
           if (result.code !== 200)
             return next(null, false, {
@@ -75,6 +76,15 @@ mongoose
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(
+  session({
+    name: "yKoolCookie",
+    secret: "afhgvkjhbecrehgker",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());

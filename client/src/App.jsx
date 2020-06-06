@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./styles/App.css";
 import MainRouter from "./MainRouter";
 import UserContextProvider from "./store/UserContextProvider.js";
