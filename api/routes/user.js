@@ -2,9 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const router = express.Router();
 const passport = require("passport");
-
 const User = require("./../models/User");
-// import { a/uthenticateUser } from "./helpers/user";
 
 router.post("/new_user", async (req, res) => {
   const { email, fullName, role, password } = req.body;
