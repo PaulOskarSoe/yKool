@@ -11,13 +11,13 @@ import {
 import BackGroundImage from "./../../assets/login_background.jpeg";
 import CourseModal from "./CourseModal.jsx";
 
-const CourseBox = ({ data }) => {
+const CourseBox = ({ data, index }) => {
   const [modal, setModal] = useState(false);
 
   const toggle = () => setModal(!modal);
 
   return (
-    <div className="dashboard-course-box">
+    <div className="dashboard-course-box" key={index}>
       <CourseModal modal={modal} toggle={toggle} />
       <Card>
         <CardImg

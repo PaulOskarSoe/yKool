@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 const CourseModal = ({ modal, toggle }) => {
-  console.log("is modal open", modal);
   return (
     <div>
       <Modal isOpen={modal} toggle={toggle}>

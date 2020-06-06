@@ -1,16 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import BackGroundImage from "./../assets/login_background.jpeg";
 import FormImage from "./../assets/login_form_studying.png";
 import { Redirect } from "react-router-dom";
+import { UserContext } from "./../store/UserContextProvider";
+import { authenticateUser } from "./../services/userServices";
+const LoginView = () => {
+  const { user, setUser } = useContext(UserContext);
 
-const LoginView = ({ setUser, user }) => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
-  const loginUser = () => {
+  const loginUser = async () => {
     if (email && password) {
-      setUser({ email, password });
+      const authUser = await authenticateUser(email, password);
+      authUser && setUser(authUser);
     }
   };
   // handle redirect
@@ -47,7 +51,7 @@ const LoginView = ({ setUser, user }) => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </FormGroup>
-            <Button onClick={() => loginUser()}>Submit</Button>
+            <Button onClick={() => loginUser()}>Logi sisse</Button>
           </Form>
         </div>
       </div>

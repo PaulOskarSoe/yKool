@@ -54,7 +54,6 @@ const authenticateUser = function (req, res, next) {
       failWithError: false,
     },
     (error, user, info) => {
-      console.log("user", user, error);
       if (error) {
         return res.status(500).json({ msg: "Something broke :/" });
       } else if (!user) {
@@ -76,4 +75,12 @@ const authenticateUser = function (req, res, next) {
 router.post("/login", authenticateUser, (req, res) => {
   return res.json(req.user);
 });
+
+router.get("/loggedin", (req, res) => {
+  const isAuthenticated = req.isAuthenticated();
+
+  if (isAuthenticated && req.user) return res.status(200).json(req.user);
+  return res.status(401).json({ message: "You have to log in" });
+});
+
 module.exports = router;
