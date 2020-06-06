@@ -8,8 +8,8 @@ import { authenticateUser } from "./../services/userServices";
 const LoginView = () => {
   const { user, setUser } = useContext(UserContext);
 
-  const [email, setEmail] = useState("paul@mail.ee");
-  const [password, setPassword] = useState("paul");
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
 
   const loginUser = async () => {
     if (email && password) {
@@ -51,7 +51,7 @@ const LoginView = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </FormGroup>
-            <Button onClick={() => loginUser()}>Submit</Button>
+            <Button onClick={() => loginUser()}>Logi sisse</Button>
           </Form>
         </div>
       </div>
