@@ -54,7 +54,6 @@ const authenticateUser = function (req, res, next) {
       failWithError: false,
     },
     (error, user, info) => {
-      console.log("user", user, error);
       if (error) {
         return res.status(500).json({ msg: "Something broke :/" });
       } else if (!user) {

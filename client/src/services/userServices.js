@@ -1,5 +1,7 @@
-const authenticateUser = (email, password) => {
-  return fetch("/api/v1/login", {
+export const authenticateUser = (email, password) => {
+  console.log("email: ", email);
+  console.log("password: ", password);
+  return fetch("/api/v1/users/login", {
     method: "POST",
     headers: {
       "content-type": "application/json",

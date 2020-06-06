@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Collapse,
   Navbar,
@@ -9,9 +9,12 @@ import {
   NavLink,
   NavbarText,
 } from "reactstrap";
+
+import { UserContext } from "./store/UserContextProvider";
 import { Link } from "react-router-dom";
 
-const Header = ({ setUser }) => {
+const Header = () => {
+  const { user, setUser } = useContext(UserContext);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
@@ -34,6 +37,9 @@ const Header = ({ setUser }) => {
               </Link>
             </NavItem>
           </Nav>
+          <NavbarText style={{ marginRight: 25 }}>
+            Tere, {user.fullName}
+          </NavbarText>
           <NavbarText
             style={{ cursor: "pointer" }}
             onClick={() => setUser(null)}
