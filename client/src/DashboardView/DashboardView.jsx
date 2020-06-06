@@ -10,8 +10,12 @@ const DashboardView = () => {
     { name: "C++ 101", code: "IF12312" },
   ];
 
-  const renderCourseBox = courses.map((course) => {
-    return <CourseBox data={course} />;
+  const renderCourseBox = courses.map((course, index) => {
+    return (
+      <div key={index}>
+        <CourseBox data={course} index={index} />
+      </div>
+    );
   });
 
   return (

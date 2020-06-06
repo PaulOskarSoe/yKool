@@ -26,9 +26,9 @@ export const CourseView = () => {
   return (
     <div>
       <h1>Course view</h1>
-      {data.map((item) => {
+      {data.map((item, index) => {
         return (
-          <div>
+          <div key={index}>
             <CourseViewModal
               openKey={openCourse}
               toggleFn={toggle}
