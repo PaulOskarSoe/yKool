@@ -22,7 +22,7 @@ router.post("/new_course", async (req, res) => {
     if (newCourse) {
       await User.updateMany(
         { _id: teacher._id },
-        { $addToSet: { courseID: newCourse._id } }
+        { $push: { courseID: newCourse._id } }
       );
     }
   } catch (error) {}
@@ -48,7 +48,6 @@ router.post("/new_course", async (req, res) => {
 
 // we map all user courseIDs
 // we get all course objects by courseIDs, which are attached to user object
-
 router.get(`/teacher/:userId`, async (req, res) => {
   if (!req.user) return res.json({ message: "Needs auth", code: 401 });
   try {
