@@ -62,9 +62,7 @@ const authenticateUser = function (req, res, next) {
           .json({ message: (info || {}).message || "User not found" });
       } else {
         req.login(user, (err) => {
-          console.log("error: ", err);
           if (err) return res.status(500).json({ msg: "Login failed" });
-          // req.userDoc = user
           return next();
         });
       }
