@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import BackGroundImage from "./../assets/login_background.jpeg";
 import FormImage from "./../assets/login_form_studying.png";
 import { Redirect } from "react-router-dom";
 
-const LoginView = ({ setUser, user }) => {
+import { UserContext } from "./../store/UserContextProvider";
+
+const LoginView = () => {
+  const { user, setUser } = useContext(UserContext);
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
