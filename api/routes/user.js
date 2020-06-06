@@ -13,9 +13,12 @@ router.post("/new_user", async (req, res) => {
     console.log("Missing required fields");
     return res.json({ message: "Missing required fields", code: 403 });
   }
-  const existingUser = await User.findOne({ fullName });
+  const existingUser = await User.findOne({ email });
   if (existingUser) {
-    return res.json({ message: "User already exists", code: 403 });
+    return res.json({
+      message: "User with this email already exists",
+      code: 403,
+    });
   }
   let passWordHash;
   try {
@@ -53,7 +56,7 @@ const authenticateUser = function (req, res, next) {
       failWithError: false,
     },
     (error, user, info) => {
-      console.log("user, info", user, info);
+      console.log("user", user, error);
       if (error) {
         return res.status(500).json({ msg: "Something broke :/" });
       } else if (!user) {
@@ -62,13 +65,14 @@ const authenticateUser = function (req, res, next) {
           .json({ message: (info || {}).message || "User not found" });
       } else {
         req.login(user, (err) => {
+          console.log("error: ", err);
           if (err) return res.status(500).json({ msg: "Login failed" });
           // req.userDoc = user
           return next();
         });
       }
     }
-  )(req, res, next);
+  )(req, res);
 };
 
 router.post("/login", authenticateUser, (req, res) => {
