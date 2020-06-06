@@ -35,7 +35,6 @@ passport.use(
               code: result.code || 500,
             });
           else {
-            console.log("user in middleware: ", user);
             return next(null, user);
           }
         })

@@ -13,6 +13,12 @@ const LoginView = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
+  const checkForEnter = (e) => {
+    if (e.key === "Enter") {
+      loginUser();
+    }
+  };
+
   const loginUser = async () => {
     if (email && password) {
       const authUser = await authenticateUser(email, password);
@@ -57,6 +63,7 @@ const LoginView = () => {
                 name="password"
                 id="examplePassword"
                 placeholder="Sisesta parool"
+                onKeyPress={checkForEnter}
                 onChange={(e) => setPassword(e.target.value)}
               />
             </FormGroup>
