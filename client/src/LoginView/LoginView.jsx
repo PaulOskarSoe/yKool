@@ -5,6 +5,8 @@ import FormImage from "./../assets/login_form_studying.png";
 import { Redirect } from "react-router-dom";
 import { UserContext } from "./../store/UserContextProvider";
 import { authenticateUser } from "./../services/userServices";
+import Swal from "sweetalert2";
+
 const LoginView = () => {
   const { user, setUser } = useContext(UserContext);
 
@@ -14,6 +16,13 @@ const LoginView = () => {
   const loginUser = async () => {
     if (email && password) {
       const authUser = await authenticateUser(email, password);
+      if (!authUser) {
+        return Swal.fire({
+          icon: "error",
+          title: "Sisselogimine ebaõnnestus",
+          text: "Vigane email või parool...",
+        });
+      }
       authUser && setUser(authUser);
     }
   };

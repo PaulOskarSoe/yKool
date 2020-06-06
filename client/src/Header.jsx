@@ -19,6 +19,11 @@ const Header = () => {
 
   const toggle = () => setIsOpen(!isOpen);
 
+  const logOut = () => {
+    setUser(null);
+    fetch("/logout");
+  };
+
   return (
     <div>
       <Navbar color="light" light expand="md">
@@ -40,10 +45,7 @@ const Header = () => {
           <NavbarText style={{ marginRight: 25 }}>
             Tere, {user.fullName}
           </NavbarText>
-          <NavbarText
-            style={{ cursor: "pointer" }}
-            onClick={() => setUser(null)}
-          >
+          <NavbarText style={{ cursor: "pointer" }} onClick={() => logOut()}>
             Logi välja
           </NavbarText>
         </Collapse>

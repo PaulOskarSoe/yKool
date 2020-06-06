@@ -20,7 +20,6 @@ const DashboardView = () => {
 
   return (
     <div>
-      <h1>Dashboard view</h1>
       <div className="dashboard-content">
         <div className="dashboard-course-container">{renderCourseBox}</div>
         <CalendarContainer />

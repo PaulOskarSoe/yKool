@@ -25,7 +25,6 @@ export const CourseView = () => {
   const toggle = (item) => setOpenCourse(item.code);
   return (
     <div>
-      <h1>Course view</h1>
       {data.map((item, index) => {
         return (
           <div key={index}>

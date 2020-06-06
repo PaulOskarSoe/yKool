@@ -93,3 +93,9 @@ app.use("/api/v1/users", users);
 app.use("/api/v1/courses", courses);
 app.use("/api/v1/assignments", assignments);
 app.use("/api/v1/submissions", submissions);
+app.get("/logout", (req, res) => {
+  req.session.destroy((err) => {
+    console.log("User logged out, errors:", err);
+    res.redirect("/");
+  });
+});
