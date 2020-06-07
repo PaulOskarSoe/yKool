@@ -7,7 +7,7 @@ const courseSchema = new mongoose.Schema({
   teacherID: [{ type: String, required: true }],
   studentID: [{ type: String, required: false }],
   assignmentID: [{ type: String, required: false }],
-  createdAt: { type: Date.now(), required: true },
+  createdAt: { type: Date, default: new Date(), required: true }
 });
 
 const Course = mongoose.model("course", courseSchema);

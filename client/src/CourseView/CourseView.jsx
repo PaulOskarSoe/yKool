@@ -1,24 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ListGroup, ListGroupItem } from 'reactstrap';
 import CourseViewModal from "./CourseViewModal";
-
-const data = [
-    {name: 'Hulgateooria', code: 'IF9120',  description: "hulgateooria sissejuhatus"},
-    {name: 'Interaktsioonidisain', code: 'IF1230',  description: "interaktsioonidisaini sissejuhatus"},
-    {name: 'Infosüsteemid', code: 'IFI9535', description: "infosüsteemide sissejuhatus"}
-];
+import axios from 'axios';
 
 export const CourseView = () => {
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [data, setData] = useState([]);
+    useEffect( () => {
+      async function fetchData() {
+        const response = await axios('http://localhost:8080/api/v1/courses');
+        setData(response.data);
+      }
+      fetchData();
+    }, []);
   const [openCourse, setOpenCourse] = useState(false);
   const toggle = (item) => setOpenCourse(item.code);
   return (
     <div>
       <h1>Course view</h1>
       {
-        data.map(item => {
+          data.map((item, index) => {
             return (
-                <div>
+                <div key={index}>
                     <CourseViewModal openKey={openCourse} toggleFn={toggle} data={item}/>
                     <ListGroup onClick={() => toggle(item)} >
                         <ListGroupItem>{item.name} {item.code} {item.description}</ListGroupItem>

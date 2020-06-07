@@ -9,6 +9,7 @@ const app = express();
 
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const cors = require('cors');
 
 // API routes
 const users = require("./routes/user");
@@ -35,8 +36,8 @@ mongoose
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use("/api/v1/users", users);
 app.use("/api/v1/courses", courses);
 app.use("/api/v1/assignments", assignments);
 app.use("/api/v1/submissions", submissions);
+app.use(cors({origin: '*'}));

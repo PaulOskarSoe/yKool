@@ -15,7 +15,6 @@ export const CourseViewModal = (props) => {
             </ModalFooter>
         </Modal>
     )
-
 }
 
 export default CourseViewModal;

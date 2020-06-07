@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "reactstrap": "^8.4.1"
+  }
+}
