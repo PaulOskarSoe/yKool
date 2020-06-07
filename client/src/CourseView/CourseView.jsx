@@ -5,26 +5,29 @@ import { ListGroup, ListGroupItem } from "reactstrap";
 import CourseViewModal from "./CourseViewModal";
 
 export const CourseView = () => {
-  const [data, setData] = useState([]);
+  const [courses, setCourses] = useState([]);
   useEffect(() => {
     async function fetchData() {
       let response;
       try {
         // TODO: This need refacto because we will fetch all courses that user has in its object
         response = await axios("/api/v1/courses");
-        response && setData(response.data);
+        response && setCourses(response.data);
       } catch (error) {
         console.log("Error while fetching courses: ", error);
       }
     }
     fetchData();
+    return () => {
+      setCourses([]);
+    };
   }, []);
   const [openCourse, setOpenCourse] = useState(false);
   const toggle = (item) => setOpenCourse(item.code);
   return (
     <div>
       <h1>Course view</h1>
-      {data.map((item, index) => {
+      {courses.map((item, index) => {
         return (
           <div key={index}>
             <CourseViewModal
