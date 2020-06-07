@@ -10,6 +10,7 @@ export const CourseView = () => {
     async function fetchData() {
       let response;
       try {
+        // TODO: This need refacto because we will fetch all courses that user has in its object
         response = await axios("/api/v1/courses");
         response && setData(response.data);
       } catch (error) {
