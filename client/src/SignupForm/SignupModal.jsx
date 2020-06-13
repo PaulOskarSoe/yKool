@@ -25,7 +25,6 @@ const SignupModal = (props) => {
   const [isEmailValid, setEmailValid] = useState(true);
   const [isNameValid, setNameValid] = useState(true);
   const [isRoleValid, setRoleValid] = useState(true);
-  const [apiErrorMessage, setApiErrorMessage] = useState(null);
 
   const validateEmail = (email) => {
     const re = /\S+@\S+\.\S+/;
@@ -53,10 +52,7 @@ const SignupModal = (props) => {
     try {
       const response = await axios.post("/api/v1/users/new_user", body);
       if (response && response.status === 200) {
-        setNameValid(true);
-        setEmailValid(true);
-        setPasswordValid(true);
-        setRoleValid(true);
+        removeErrors();
         closeFn(false);
         Swal.fire("Kasutaja on tehtud!", "", "success");
       }
@@ -69,6 +65,13 @@ const SignupModal = (props) => {
   const handleRoleSelect = (role) => {
     if (!role) return setRole(null);
     role === "Õpetaja" ? setRole(1) : setRole(2);
+  };
+
+  const removeErrors = () => {
+    setNameValid(true);
+    setEmailValid(true);
+    setPasswordValid(true);
+    setRoleValid(true);
   };
 
   return (
@@ -126,7 +129,13 @@ const SignupModal = (props) => {
           {" "}
           Registreeri{" "}
         </Button>
-        <Button color="info" onClick={() => closeFn(false)}>
+        <Button
+          color="info"
+          onClick={() => {
+            removeErrors();
+            closeFn(false);
+          }}
+        >
           {" "}
           Loobu{" "}
         </Button>
