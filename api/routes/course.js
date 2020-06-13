@@ -145,13 +145,18 @@ router.post("/accept/request_access", async (req, res) => {
       .status(401)
       .json({ message: "Ainult õpetaja saab kursususele inimesi vastu võtta" });
 
-  const { courseId, userId } = req.body;
+  const { courseId, userId, didAccept } = req.body;
 
   if (!courseId || !userId)
     return res.status(403).json({ message: "Vajalikud väljad on puudu" });
   try {
     // add student to course
-    await Course.updateOne({ _id: courseId }, { $push: { studentID: userId } });
+    if (didAccept) {
+      await Course.updateOne(
+        { _id: courseId },
+        { $push: { studentID: userId } }
+      );
+    }
     // remove student from pending
     await Course.updateOne(
       { _id: courseId },
