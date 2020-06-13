@@ -7,7 +7,9 @@ const User = require("./models/User");
 
 // init PORT && DB access key
 const PORT = process.env.PORT || 8080;
-const DB_URL = process.env.DB_ACCESS;
+const DB_URL =
+  process.env.DB_ACCESS ||
+  "mongodb+srv://yKool:PleaseDontHackMe112@ykool-vv0we.mongodb.net/test?retryWrites=true&w=majority";
 
 const express = require("express");
 const app = express();
@@ -75,7 +77,6 @@ mongoose
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(
   session({
     name: "yKoolCookie",
@@ -92,6 +93,7 @@ app.use("/api/v1/users", users);
 app.use("/api/v1/courses", courses);
 app.use("/api/v1/assignments", assignments);
 app.use("/api/v1/submissions", submissions);
+
 app.get("/logout", (req, res) => {
   req.session.destroy((err) => {
     console.log("User logged out, errors:", err);
