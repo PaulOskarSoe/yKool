@@ -6,7 +6,7 @@ import CourseViewModal from "./CourseViewModal";
 
 import CourseFormModal from "./CourseFormModal";
 
-import { Button } from 'reactstrap';
+import { Button } from "reactstrap";
 
 export const CourseView = () => {
   const [courses, setCourses] = useState([]);
@@ -35,7 +35,11 @@ export const CourseView = () => {
       <Button color="primary" onClick={() => setModalVisible(true)}>
         Lisa kursus
       </Button>
-      <CourseFormModal visible={modalVisible} closeFn={setModalVisible} />
+      <CourseFormModal
+        visible={modalVisible}
+        closeFn={setModalVisible}
+        setCourses={setCourses}
+      />
       {courses.map((item, index) => {
         return (
           <div key={index}>

@@ -3,13 +3,37 @@ import React, { useState } from "react";
 import { Modal, Button, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
 import { Form, FormGroup, Label, Input } from "reactstrap";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const CourseFormModal = (props) => {
-  const { visible, closeFn } = props;
+  const { visible, closeFn, setCourses } = props;
 
-  const [courseName, setCourse] = useState();
+  const [courseName, setCourseName] = useState();
   const [courseCode, setCourseCode] = useState();
   const [courseDescription, setCourseDescription] = useState();
+
+  const addCourse = async () => {
+    const body = {
+      name: courseName,
+      code: courseCode,
+      description: courseDescription,
+    };
+    try {
+      const response = await axios.post("/api/v1/courses/new_course", body);
+      if (response && response.status === 200) {
+        Swal.fire(
+          "Kursuse lisamine õnnestus",
+          `${courseName} on lisatud!`,
+          "success"
+        );
+      }
+      setCourses((courses) => [...courses, response.data.data]);
+      closeFn(false);
+    } catch (error) {
+      console.log("error while adding course: ", error);
+      Swal.fire("Midagi läks valesti", "", "danger");
+    }
+  };
 
   return (
     <Modal isOpen={visible}>
@@ -23,7 +47,7 @@ const CourseFormModal = (props) => {
               name="name"
               id="courseName"
               placeholder="sisesta kursuse nimi"
-              onChange={(e) => setCourse(e.target.value)}
+              onChange={(e) => setCourseName(e.target.value)}
             />
           </FormGroup>
           <FormGroup>
@@ -49,7 +73,9 @@ const CourseFormModal = (props) => {
         </Form>
       </ModalBody>
       <ModalFooter>
-        <Button color="primary">Lisa</Button>
+        <Button color="primary" onClick={() => addCourse()}>
+          Lisa
+        </Button>
         <Button
           color="danger"
           onClick={() => {

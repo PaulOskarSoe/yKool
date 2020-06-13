@@ -5,7 +5,8 @@ const User = require("./../models/User");
 const Course = require("./../models/Course");
 
 router.post("/new_course", async (req, res) => {
-  const { userId, name, code, description } = req.body;
+  const userId = req.user._id;
+  const { name, code, description } = req.body;
   if (!req.user) return res.json({ message: "Needs auth", code: 401 });
   if (!name || !code)
     return res.json({ message: "Missing fields: [code, name]", code: 403 });
