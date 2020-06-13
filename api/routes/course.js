@@ -75,10 +75,12 @@ router.get(`/student/:userId`, async (req, res) => {
 router.delete("/:courseId", async (req, res) => {
   if (!req.user)
     return res.status(401).json({ message: "Vajab autoriseerimist" });
+
   if (req.user.role !== 1)
     return res
       .status(401)
       .json({ message: "Ainult õpetaja saab kursusi eemaldada" });
+
   try {
     const deletedCourse = await Course.deleteOne({ _id: req.params.courseId });
     console.log("deleted course: ", deletedCourse);
@@ -94,6 +96,10 @@ router.post("/request_access", async (req, res) => {
   if (!req.user)
     return res.status(401).json({ message: "Vajab autoriseerimist" });
   const { userId, courseId } = req.body;
+
+  if (!courseId || !userId)
+    return res.status(403).json({ message: "Vajalikud väljad on puudu" });
+
   try {
     const updatedCourse = await Course.update(
       { _id: courseId },
@@ -108,18 +114,51 @@ router.post("/request_access", async (req, res) => {
 router.get("/request_access", async (req, res) => {
   if (!req.user)
     return res.status(401).json({ message: "Vajab autoriseerimist" });
+
   if (req.user.role !== 1)
     return res
       .status(401)
       .json({ message: "Ainult õpetaja saab kursususele inimesi vastu võtta" });
 
   const { courseId } = req.body;
+
+  if (!courseId)
+    return res.status(403).json({ message: "Vajalikud väljad on puudu" });
+
   try {
     const courseRequests = await Course.findById(courseId, {
       pendingStudendID: 1,
     });
     if (courseRequests)
       return res.status(200).json({ message: "OK", data: courseRequests });
+  } catch (error) {
+    return res.send(403).json({ error, message: "Midagi läks valesti" });
+  }
+});
+
+router.post("/accept/request_access", async (req, res) => {
+  if (!req.user)
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
+
+  if (req.user.role !== 1)
+    return res
+      .status(401)
+      .json({ message: "Ainult õpetaja saab kursususele inimesi vastu võtta" });
+
+  const { courseId, userId } = req.body;
+
+  if (!courseId || !userId)
+    return res.status(403).json({ message: "Vajalikud väljad on puudu" });
+  try {
+    // add student to course
+    await Course.updateOne({ _id: courseId }, { $push: { studentID: userId } });
+    // remove student from pending
+    await Course.updateOne(
+      { _id: courseId },
+      { $pull: { pendingStudendID: userId } }
+    );
+
+    return res.status(200).json({ message: "OK" });
   } catch (error) {
     return res.send(403).json({ error, message: "Midagi läks valesti" });
   }
