@@ -6,6 +6,7 @@ const assignmentSchema = new mongoose.Schema({
   endDate: { type: Date, required: false },
   createdAt: { type: Date.now(), required: true },
   submissionID: { type: String, required: false },
+  courseID: { type: String },
 });
 
 const Assignment = mongoose.model("assignment", assignmentSchema);

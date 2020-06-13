@@ -6,8 +6,8 @@ const courseSchema = new mongoose.Schema({
   description: { type: String, required: false },
   teacherID: [{ type: String, required: true }],
   studentID: [{ type: String, required: false }],
-  assignmentID: [{ type: String, required: false }],
-  createdAt: { type: Date, default: new Date(), required: true }
+  pendingStudendID: [{ type: String, required: false }],
+  createdAt: { type: Date, default: Date.now },
 });
 
 const Course = mongoose.model("course", courseSchema);
