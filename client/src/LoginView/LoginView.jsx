@@ -10,18 +10,18 @@ import SignupModal from "./../SignupForm/SignupModal";
 
 const LoginView = () => {
   const { user, setUser } = useContext(UserContext);
-  
+
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-  
+
   const checkForEnter = (e) => {
     if (e.key === "Enter") {
       loginUser();
     }
   };
-  
-const loginUser = async () => {
+
+  const loginUser = async () => {
     if (email && password) {
       const authUser = await authenticateUser(email, password);
       if (!authUser) {
@@ -69,15 +69,16 @@ const loginUser = async () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </FormGroup>
-            <Button onClick={() => loginUser()}>Logi sisse</Button> {" "}
-            <Button onClick={() => setModalVisible(true)}>Registreeri</Button>
+            <Button color="success" onClick={() => loginUser()}>
+              Logi sisse
+            </Button>{" "}
+            <Button color="info" onClick={() => setModalVisible(true)}>
+              Registreeri
+            </Button>
           </Form>
         </div>
       </div>
-      <SignupModal
-        visible={modalVisible}
-        closeFn={setModalVisible}
-      />
+      <SignupModal visible={modalVisible} closeFn={setModalVisible} />
     </div>
   );
 };
