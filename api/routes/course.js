@@ -105,4 +105,24 @@ router.post("/request_access", async (req, res) => {
   }
 });
 
+router.get("/request_access", async (req, res) => {
+  if (!req.user)
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
+  if (req.user.role !== 1)
+    return res
+      .status(401)
+      .json({ message: "Ainult õpetaja saab kursususele inimesi vastu võtta" });
+
+  const { courseId } = req.body;
+  try {
+    const courseRequests = await Course.findById(courseId, {
+      pendingStudendID: 1,
+    });
+    if (courseRequests)
+      return res.status(200).json({ message: "OK", data: courseRequests });
+  } catch (error) {
+    return res.send(403).json({ error, message: "Midagi läks valesti" });
+  }
+});
+
 module.exports = router;
