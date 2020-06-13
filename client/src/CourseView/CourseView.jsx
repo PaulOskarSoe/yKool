@@ -4,8 +4,13 @@ import axios from "axios";
 import { ListGroup, ListGroupItem } from "reactstrap";
 import CourseViewModal from "./CourseViewModal";
 
+import CourseFormModal from "./CourseFormModal";
+
+import { Button } from 'reactstrap';
+
 export const CourseView = () => {
   const [courses, setCourses] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
   useEffect(() => {
     async function fetchData() {
       let response;
@@ -27,6 +32,10 @@ export const CourseView = () => {
   return (
     <div>
       <h1>Course view</h1>
+      <Button color="primary" onClick={() => setModalVisible(true)}>
+        Lisa kursus
+      </Button>
+      <CourseFormModal visible={modalVisible} closeFn={setModalVisible} />
       {courses.map((item, index) => {
         return (
           <div key={index}>
