@@ -90,6 +90,19 @@ router.delete("/:courseId", async (req, res) => {
   }
 });
 
-// router.post('')
+router.post("/request_access", async (req, res) => {
+  if (!req.user)
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
+  const { userId, courseId } = req.body;
+  try {
+    const updatedCourse = await Course.update(
+      { _id: courseId },
+      { $push: { pendingStudendID: userId } }
+    );
+    if (updatedCourse) return res.status(200).json({ message: "OK" });
+  } catch (error) {
+    return res.send(403).json({ error, message: "Midagi läks valesti" });
+  }
+});
 
 module.exports = router;

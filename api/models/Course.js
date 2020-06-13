@@ -6,7 +6,7 @@ const courseSchema = new mongoose.Schema({
   description: { type: String, required: false },
   teacherID: [{ type: String, required: true }],
   studentID: [{ type: String, required: false }],
-  pendingStudendIDS: [{ type: String, required: false }],
+  pendingStudendID: [{ type: String, required: false }],
   createdAt: { type: Date, default: Date.now },
 });
 
