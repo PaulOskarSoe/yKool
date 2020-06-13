@@ -8,7 +8,7 @@ const CalendarContainer = () => {
   const onChange = (newDate) => updateDate(newDate);
 
   return (
-    <div>
+    <div className="calendar-container">
       <Calendar onChange={onChange} value={date} />
     </div>
   );
