@@ -22,6 +22,13 @@ const LoginView = () => {
   };
 
   const loginUser = async () => {
+    if (!email || !password) {
+      return Swal.fire({
+        icon: "error",
+        title: "Sisselogimine ebaõnnestus",
+        text: "Sisesta parool ja email",
+      });
+    }
     if (email && password) {
       const authUser = await authenticateUser(email, password);
       if (!authUser) {
