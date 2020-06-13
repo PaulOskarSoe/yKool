@@ -49,7 +49,7 @@ router.post("/new_course", async (req, res) => {
 
 // we map all user courseIDs
 // we get all course objects by courseIDs, which are attached to user object
-router.get(`/teacher/:userId`, async (req, res) => {
+router.get(`/:userId`, async (req, res) => {
   if (!req.user)
     return res.status(401).json({ message: "Vajab autoriseerimist" });
   try {
@@ -58,18 +58,6 @@ router.get(`/teacher/:userId`, async (req, res) => {
     return res.json({ data: courses, code: 200 });
   } catch (error) {
     return res.send(403).json({ error, message: "Midagi läks valesti" });
-  }
-});
-
-router.get(`/student/:userId`, async (req, res) => {
-  if (!req.user)
-    return res.stauts(401).json({ message: "Vajab autoriseerimist" });
-  try {
-    const user = await User.findById(req.params.userId);
-    const courses = await Course.find({ _id: { $in: user.courseID } });
-    return res.json({ data: courses, code: 200 });
-  } catch (error) {
-    return res.json({ error, code: 403 });
   }
 });
 

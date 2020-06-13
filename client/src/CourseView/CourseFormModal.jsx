@@ -13,6 +13,9 @@ const CourseFormModal = (props) => {
   const [courseDescription, setCourseDescription] = useState();
 
   const addCourse = async () => {
+    if (!courseName || !courseCode) {
+      return Swal.fire("Kursusenimi või kursusekood on puudu!", "", "danger");
+    }
     const body = {
       name: courseName,
       code: courseCode,
