@@ -49,7 +49,20 @@ router.post("/new_course", async (req, res) => {
 // we map all user courseIDs
 // we get all course objects by courseIDs, which are attached to user object
 router.get(`/teacher/:userId`, async (req, res) => {
-  if (!req.user) return res.json({ message: "Needs auth", code: 401 });
+  if (!req.user)
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
+  try {
+    const user = await User.findById(req.params.userId);
+    const courses = await Course.find({ _id: { $in: user.courseID } });
+    return res.json({ data: courses, code: 200 });
+  } catch (error) {
+    return res.send(403).json({ error, message: "Midagi läks valesti" });
+  }
+});
+
+router.get(`/student/:userId`, async (req, res) => {
+  if (!req.user)
+    return res.stauts(401).json({ message: "Vajab autoriseerimist" });
   try {
     const user = await User.findById(req.params.userId);
     const courses = await Course.find({ _id: { $in: user.courseID } });
@@ -59,14 +72,21 @@ router.get(`/teacher/:userId`, async (req, res) => {
   }
 });
 
-router.get(`/student/:userId`, async (req, res) => {
-  if (!req.user) return res.json({ message: "Needs auth", code: 401 });
+router.delete("/:courseId", async (req, res) => {
+  if (!req.user)
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
+  if (req.user.role !== 1)
+    return res
+      .status(401)
+      .json({ message: "Ainult õpetaja saab kursusi eemaldada" });
   try {
-    const user = await User.findById(req.params.userId);
-    const courses = await Course.find({ _id: { $in: user.courseID } });
-    return res.json({ data: courses, code: 200 });
+    const deletedCourse = await Course.deleteOne({ _id: req.params.courseId });
+    console.log("deleted course: ", deletedCourse);
+    return res
+      .send(200)
+      .json({ message: "Kustustamine oli edukas", data: deletedCourse });
   } catch (error) {
-    return res.json({ error, code: 403 });
+    return res.send(403).json({ error, message: "Midagi läks valesti" });
   }
 });
 
