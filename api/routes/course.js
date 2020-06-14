@@ -26,7 +26,10 @@ router.post("/new_course", async (req, res) => {
         { $push: { courseID: newCourse._id } }
       );
     }
-  } catch (error) {}
+  } catch (error) {
+    console.log("error while creating a course: ", error);
+    return res.send(403).json({ error, message: "Midagi läks valesti" });
+  }
   if (newCourse) {
     newCourse
       .save()
