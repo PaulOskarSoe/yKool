@@ -3,16 +3,16 @@ const router = express.Router();
 
 const Assignment = require("./../models/Assignment");
 
-router.post("/new_assignment", async (res, req) => {
+router.post("/new_assignment", async (req, res) => {
   if (!req.user)
-    return res.status(401).json({ message: "Vajab autoriseerimist" });
-  if (teacher && teacher.role !== 1) {
-    return res.status(401).json({ message: "Kasutaja peab olema õpetaja" });
+    return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
+  if (req.user && req.user.role !== 1) {
+    return res.sendStatus(401).json({ message: "Kasutaja peab olema õpetaja" });
   }
   const { userId, courseId, description, endDate } = req.body;
 
   if (!courseId || !userId || !description || !endDate)
-    return res.status(403).json({ message: "Vajalikud väljad on puudu" });
+    return res.sned(403).json({ message: "Vajalikud väljad on puudu" });
 
   try {
     const newAssignment = await new Assignment({
@@ -25,15 +25,35 @@ router.post("/new_assignment", async (res, req) => {
       newAssignment
         .save()
         .then((doc) => {
-          return res.status(200).json({ message: "OK", data: doc });
+          res.status(200);
+          return res.json({ message: "OK", data: doc });
         })
         .catch((err) =>
-          res.status(400).json({ error: err, message: "Midagi läks valesti" })
+          res
+            .sendStatus(400)
+            .json({ error: err, message: "Midagi läks valesti" })
         );
     }
   } catch (error) {
     console.log("error while creating an assignment", error);
-    return res.send(403).json({ error, message: "Midagi läks valesti" });
+    return res.sendStatus(403).json({ error, message: "Midagi läks valesti" });
+  }
+});
+
+router.delete("/:assignmentId", async (req, res) => {
+  if (!req.user)
+    return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
+  if (req.user && req.user.role !== 1) {
+    return res.sendStatus(401).json({ message: "Kasutaja peab olema õpetaja" });
+  }
+
+  try {
+    await Assignment.deleteOne({ _id: req.params.courseId });
+    return res
+      .sendStatus(200)
+      .json({ message: "Kustustamine oli edukas", data: deletedCourse });
+  } catch (error) {
+    return res.sendStatus(403).json({ error, message: "Midagi läks valesti" });
   }
 });
 
