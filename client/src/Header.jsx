@@ -6,7 +6,6 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
   NavbarText,
 } from "reactstrap";
 
@@ -30,18 +29,7 @@ const Header = () => {
         <NavbarBrand href="/">üKool</NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
-          <Nav className="mr-auto" navbar>
-            <NavItem>
-              <Link to="/dashboard" className="nav-link">
-                Töölaud
-              </Link>
-            </NavItem>
-            <NavItem>
-              <Link to="/course" className="nav-link">
-                Kursused
-              </Link>
-            </NavItem>
-          </Nav>
+          <Nav className="mr-auto" navbar></Nav>
           <NavbarText style={{ marginRight: 25 }}>
             Tere, {user.fullName}
           </NavbarText>

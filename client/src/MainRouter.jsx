@@ -1,12 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import { UserContext } from "./store/UserContextProvider";
 import Header from "./Header.jsx";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { checkIfAuthenticated } from "./services/userServices";
 
 import LoginView from "./LoginView/LoginView.jsx";
-import CourseView from "./CourseView/CourseView.jsx";
-import DashboardView from "./DashboardView/DashboardView.jsx";
+import DashboardView from "./Dashboard/DashboardView.jsx";
 
 const MainRouter = () => {
   const { user, setUser } = useContext(UserContext);
@@ -31,7 +30,6 @@ const MainRouter = () => {
         <Route path="/" component={() => <LoginView />} />
 
         {/* PRIVATE ROUTES AREA ACCESSABLE ONLY IF WE HAVE USER  */}
-        {user && <Route path="/course" component={() => <CourseView />} />}
         {user && (
           <Route path="/dashboard" component={() => <DashboardView />} />
         )}

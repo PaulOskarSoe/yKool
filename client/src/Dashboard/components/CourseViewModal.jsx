@@ -8,13 +8,13 @@ import {
   Badge,
 } from "reactstrap";
 import axios from "axios";
-import { UserContext } from "./../../store/UserContextProvider";
+import { UserContext } from "../../store/UserContextProvider";
 
 import PendingStudentsModal from "./PendingStudentsModal";
 
 export const CourseViewModal = (props) => {
   const { user } = useContext(UserContext);
-  const { openKey, toggleFn, data } = props;
+  const { openKey, toggleFn, course } = props;
   const [pendingRequests, setPendingRequests] = useState([]);
   const [pengingRequestsModal, setPendingRequestsModal] = useState(false);
 
@@ -23,7 +23,7 @@ export const CourseViewModal = (props) => {
     const getAllPendingRequest = async () => {
       try {
         const response = await axios.get(
-          `/api/v1/courses/request_access/access/${data._id}`
+          `/api/v1/courses/request_access/access/${course._id}`
         );
         if (response && response.data && response.status === 200) {
           setPendingRequests(response.data.courseRequests.pendingStudendID);
@@ -49,11 +49,12 @@ export const CourseViewModal = (props) => {
   }, []);
 
   // handle grammar
-  const handleSinglar = pendingRequests.length > 1 && "t";
+  const handleSinglar =
+    pendingRequests.length > 1 || (pendingRequests.length === 0 && "t");
 
   return (
-    <Modal isOpen={openKey === data.code} size="lg">
-      <ModalHeader>{data.name}</ModalHeader>
+    <Modal isOpen={openKey} size="lg">
+      <ModalHeader>{course.name}</ModalHeader>
       <ModalBody>
         {user.role === 1 && (
           <div
@@ -61,19 +62,20 @@ export const CourseViewModal = (props) => {
             onClick={() => setPendingRequestsModal(true)}
           >
             <h5>
-              {user.fullName}, teil on
+              {user.fullName}, teil on{" "}
               <Badge color="info">{pendingRequests.length}</Badge> soovija
-              {handleSinglar} kursusele {data.name}
+              {handleSinglar} kursusele{" "}
+              <Badge color="info">{course.name}</Badge>
             </h5>
             kursusele
           </div>
         )}
-        <label>{data.description}</label>
+        <label>{course.description}</label>
         <PendingStudentsModal
           toggle={() => setPendingRequestsModal(false)}
           modal={pengingRequestsModal}
           pendingStudents={pendingRequests}
-          courseId={data._id}
+          courseId={course._id}
         />
       </ModalBody>
       <ModalFooter>
