@@ -23,7 +23,6 @@ export const FindCourseModal = ({ showModal, toggle }) => {
     const getCoursesByCourseName = async () => {
       try {
         const response = await axios.get(`/api/v1/courses/name/${searchText}`);
-        console.log(response);
         response &&
           response.data &&
           response.status === 200 &&
@@ -33,6 +32,10 @@ export const FindCourseModal = ({ showModal, toggle }) => {
       }
     };
     searchText && searchText.length && getCoursesByCourseName();
+    return () => {
+      setSearchText();
+      setCourses([]);
+    };
   }, [searchText]);
 
   const requestForCoursePermission = async (courseId) => {

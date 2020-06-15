@@ -22,9 +22,8 @@ export const CourseView = () => {
 
   useEffect(() => {
     async function fetchData() {
-      let response;
       try {
-        response = await axios(`/api/v1/courses/${user._id}`);
+        const response = await axios(`/api/v1/courses/${user._id}`);
         response && setCourses(response.data.data);
       } catch (error) {
         console.log("Error while fetching courses: ", error);
