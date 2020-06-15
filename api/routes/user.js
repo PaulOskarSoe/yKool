@@ -8,14 +8,12 @@ router.post("/new_user", async (req, res) => {
   const { email, fullName, role, password } = req.body;
   // check if we have required fields
   if (!email && !fullName && !role && password) {
-    console.log("Missing required fields");
-    return res.json({ message: "Missing required fields", code: 403 });
+    return res.status(401).json({ message: "Vajalikud väljad puuduvad" });
   }
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    return res.json({
-      message: "User with this email already exists",
-      code: 403,
+    return res.status(401).json({
+      message: "Selline kasutaja juba eksisteerib",
     });
   }
   let passWordHash;
@@ -37,10 +35,9 @@ router.post("/new_user", async (req, res) => {
         });
       })
       .catch((err) => {
-        return res.json({
-          message: "Something went wrong",
+        return res.status(400).json({
+          message: "Tekkis viga kasutaja loomisel",
           data: err,
-          code: 400,
         });
       });
   }
