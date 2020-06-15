@@ -19,6 +19,9 @@ const MainRouter = () => {
       authenticatedUser && setUser(authenticatedUser);
     };
     checkForAuth();
+    return () => {
+      setUser(null);
+    };
   }, []);
 
   return (

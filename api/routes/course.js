@@ -15,17 +15,16 @@ router.post("/new_course", async (req, res) => {
     return res.json({ message: "Missing fields: [code, name]", code: 403 });
 
   const newCourse = new Course({ name, code, description });
-
   try {
     if (newCourse) {
       await User.updateMany(
-        { _id: teacher._id },
+        { _id: req.user._id },
         { $push: { courseID: newCourse._id } }
       );
     }
   } catch (error) {
     console.log("error while creating a course: ", error);
-    return res.sendStatus(403).json({ error, message: "Midagi läks valesti" });
+    return res.status(403).json({ error, message: "Midagi läks valesti" });
   }
 
   if (newCourse) {
@@ -48,106 +47,121 @@ router.post("/new_course", async (req, res) => {
   }
 });
 
+// GET courses by course name
+router.get("/name/:courseName", async (req, res) => {
+  if (!req.user)
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
+  try {
+    res.json(
+      await Course.find({ name: { $regex: `.*${req.params.courseName}.*` } })
+    );
+  } catch (error) {
+    return res.status(403).json({ error, message: "Midagi läks valesti" });
+  }
+});
+
 // GET courses by userID
 router.get(`/:userId`, async (req, res) => {
   if (!req.user)
-    return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
   try {
     const user = await User.findById(req.params.userId);
     const courses = await Course.find({ _id: { $in: user.courseID } });
     return res.json({ data: courses, code: 200 });
   } catch (error) {
-    return res.sendStatus(403).json({ error, message: "Midagi läks valesti" });
+    return res.status(403).json({ error, message: "Midagi läks valesti" });
   }
 });
 
 // DELETE course by course ID
 router.delete("/:courseId", async (req, res) => {
   if (!req.user)
-    return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
 
   if (req.user.role !== 1)
     return res
-      .sendStatus(401)
+      .status(401)
       .json({ message: "Ainult õpetaja saab kursusi eemaldada" });
 
   try {
     const deletedCourse = await Course.deleteOne({ _id: req.params.courseId });
     return res
-      .sendStatus(200)
+      .status(200)
       .json({ message: "Kustustamine oli edukas", data: deletedCourse });
   } catch (error) {
-    return res.sendStatus(403).json({ error, message: "Midagi läks valesti" });
+    return res.status(403).json({ error, message: "Midagi läks valesti" });
   }
 });
 
 // REQUEST access for a course
 router.post("/request_access", async (req, res) => {
   if (!req.user)
-    return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
-  const { userId, courseId } = req.body;
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
+  const userId = req.user._id;
+  const { courseId } = req.body;
 
   if (!courseId || !userId)
-    return res.sendStatus(403).json({ message: "Vajalikud väljad on puudu" });
+    return res.status(403).json({ message: "Vajalikud väljad on puudu" });
 
   try {
     const updatedCourse = await Course.update(
       { _id: courseId },
       { $push: { pendingStudendID: userId } }
     );
-    if (updatedCourse) return res.sendStatus(200).json({ message: "OK" });
+    if (updatedCourse) return res.status(200).json({ message: "OK" });
   } catch (error) {
-    return res.sendStatus(403).json({ error, message: "Midagi läks valesti" });
+    return res.status(403).json({ error, message: "Midagi läks valesti" });
   }
 });
 
 // GET all access request which are made to a course
-router.get("/request_access", async (req, res) => {
+router.get("/request_access/access/:courseId", async (req, res) => {
+  const { courseId } = req.params;
   if (!req.user)
-    return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
 
   if (req.user.role !== 1)
     return res
-      .sendStatus(401)
+      .status(401)
       .json({ message: "Ainult õpetaja saab kursususele inimesi vastu võtta" });
 
-  const { courseId } = req.body;
-
   if (!courseId)
-    return res.sendStatus(403).json({ message: "Vajalikud väljad on puudu" });
+    return res.status(403).json({ message: "Vajalikud väljad on puudu" });
 
   try {
     const courseRequests = await Course.findById(courseId, {
       pendingStudendID: 1,
     });
     if (courseRequests)
-      return res.sendStatus(200).json({ message: "OK", data: courseRequests });
+      return res.status(200).json({ message: "OK", courseRequests });
   } catch (error) {
-    return res.sendStatus(403).json({ error, message: "Midagi läks valesti" });
+    return res.status(403).json({ error, message: "Midagi läks valesti" });
   }
 });
 
 // ACCEPT request access, which a student made to a course
 router.post("/accept/request_access", async (req, res) => {
   if (!req.user)
-    return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
 
   if (req.user.role !== 1)
     return res
-      .sendStatus(401)
+      .status(401)
       .json({ message: "Ainult õpetaja saab kursususele inimesi vastu võtta" });
 
-  const { courseId, userId, didAccept } = req.body;
-
+  const { courseId, didAccept, userId } = req.body;
+  console.log("body: ", req.body);
   if (!courseId || !userId)
-    return res.sendStatus(403).json({ message: "Vajalikud väljad on puudu" });
+    return res.status(403).json({ message: "Vajalikud väljad on puudu" });
   try {
     // add student to course
     if (didAccept) {
+      console.log("did accept!: ", didAccept);
       await Course.updateOne(
         { _id: courseId },
         { $push: { studentID: userId } }
       );
+      await User.updateOne({ _id: userId }, { $push: { courseID: courseId } });
     }
     // remove student from pending
     await Course.updateOne(
@@ -155,9 +169,9 @@ router.post("/accept/request_access", async (req, res) => {
       { $pull: { pendingStudendID: userId } }
     );
 
-    return res.sendStatus(200).json({ message: "OK" });
+    return res.status(200).json({ message: "OK" });
   } catch (error) {
-    return res.sendStatus(403).json({ error, message: "Midagi läks valesti" });
+    return res.status(403).json({ error, message: "Midagi läks valesti" });
   }
 });
 
