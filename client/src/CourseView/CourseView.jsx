@@ -8,7 +8,8 @@ import CourseFormModal from "./CourseFormModal";
 
 import { Button } from "reactstrap";
 import { UserContext } from "./../store/UserContextProvider";
-import { FaTrashAlt } from "react-icons/fa";
+import { FaTrashAlt, FaAlignRight } from "react-icons/fa";
+import { FaPlus } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 export const CourseView = () => {
@@ -49,7 +50,8 @@ export const CourseView = () => {
 
   return (
     <div>
-      <Button icon name ="arrow-right" color="course" onClick={() => setModalVisible(true)}>
+      <Button icon="warning" color="course" onClick={() => setModalVisible(true)}>
+      <FaPlus className="plus-icon" style={{color: "white", margin:"0px 14px 0px 0px" }} />
         Lisa kursus
       </Button>
       <CourseFormModal
