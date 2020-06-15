@@ -65,4 +65,29 @@ router.post("/new_submission", async (req, res) => {
   }
 });
 
+//ACCEPT submission
+router.post("/accept/:submissionId", async (req, res) => {
+  const { submissionId } = req.params;
+  if (!req.user)
+    return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
+  if (req.user.role !== 1)
+    return res
+      .sendStatus(401)
+      .json({ message: "Ainult õpetaja saab vastuseid akspeteerida" });
+  if (!submissionId) return res.sendStatus(401);
+  try {
+    // set did accept to true
+    const updatedSubmission = await Submission.updateOne(
+      { _id: submissionId },
+      { $set: { isAccepted: true } }
+    );
+    if (updatedSubmission) {
+      res.status(200);
+      return res.json({ message: "Vastus on aksepteeritud" });
+    }
+  } catch (error) {
+    return res.sendStatus(403).json({ message: "Vajalikud väljad on puudu" });
+  }
+});
+
 module.exports = router;
