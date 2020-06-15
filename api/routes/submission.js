@@ -29,7 +29,6 @@ router.get("/:assignmentId", async (req, res) => {
 router.post("/new_submission", async (req, res) => {
   const userId = req.user._id;
   const { submissionTitle, submissionContent, assignmentId } = req.body;
-  console.log("body and userID", userId, submissionTitle, submissionContent);
   // check permissions and for required fields
   if (!req.user)
     return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
