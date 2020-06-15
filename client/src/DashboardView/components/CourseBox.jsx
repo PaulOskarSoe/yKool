@@ -33,7 +33,7 @@ const CourseBox = ({ data, index }) => {
             Some quick example text to build on the card title and make up the
             bulk of the card's content.
           </CardText>
-          <Button onClick={() => setModal(true)}>Button</Button>
+          <Button onClick={() => setModal(true)}>Vaata</Button>
         </CardBody>
       </Card>
     </div>

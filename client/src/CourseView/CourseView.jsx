@@ -49,7 +49,7 @@ export const CourseView = () => {
 
   return (
     <div>
-      <Button color="primary" onClick={() => setModalVisible(true)}>
+      <Button icon name ="arrow-right" color="course" onClick={() => setModalVisible(true)}>
         Lisa kursus
       </Button>
       <CourseFormModal
