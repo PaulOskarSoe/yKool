@@ -6,6 +6,7 @@ import {
   ModalFooter,
   ModalHeader,
   InputGroup,
+  InputGroupText,
   Input,
   ListGroup,
   ListGroupItem,
@@ -48,7 +49,11 @@ export const FindCourseModal = ({ showModal, toggle }) => {
       }
     } catch (error) {
       console.log("error while requesting permission: ", error);
-      Swal.fire("Midagi läks katki", "", "error");
+      Swal.fire(
+        "Midagi läks valesti",
+        "Kutse saadeti kursuse õppejõule",
+        "error"
+      );
     }
   };
 
