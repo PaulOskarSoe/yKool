@@ -15,11 +15,10 @@ router.post("/new_course", async (req, res) => {
     return res.json({ message: "Missing fields: [code, name]", code: 403 });
 
   const newCourse = new Course({ name, code, description });
-
   try {
     if (newCourse) {
       await User.updateMany(
-        { _id: teacher._id },
+        { _id: req.user._id },
         { $push: { courseID: newCourse._id } }
       );
     }
@@ -45,6 +44,20 @@ router.post("/new_course", async (req, res) => {
           code: 400,
         });
       });
+  }
+});
+
+// GET courses by course name
+router.get("/name/:courseName", async (req, res) => {
+  if (!req.user)
+    return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
+  console.log("course name: ", req.params.courseName);
+  try {
+    res.json(
+      await Course.find({ name: { $regex: `.*${req.params.courseName}.*` } })
+    );
+  } catch (error) {
+    return res.sendStatus(403).json({ error, message: "Midagi läks valesti" });
   }
 });
 
@@ -85,7 +98,8 @@ router.delete("/:courseId", async (req, res) => {
 router.post("/request_access", async (req, res) => {
   if (!req.user)
     return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
-  const { userId, courseId } = req.body;
+  const userId = req.user._id;
+  const { courseId } = req.body;
 
   if (!courseId || !userId)
     return res.sendStatus(403).json({ message: "Vajalikud väljad on puudu" });

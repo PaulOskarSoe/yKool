@@ -6,7 +6,7 @@ import { Redirect } from "react-router-dom";
 import { UserContext } from "./../store/UserContextProvider";
 import { authenticateUser } from "./../services/userServices";
 import Swal from "sweetalert2";
-import SignupModal from "./../SignupForm/SignupModal";
+import SignupModal from "./components/SignupModal";
 
 const LoginView = () => {
   const { user, setUser } = useContext(UserContext);

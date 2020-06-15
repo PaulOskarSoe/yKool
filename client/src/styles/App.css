@@ -67,3 +67,16 @@ body {
   display: flex;
   flex-direction: row;
 }
+
+#find-course-container {
+  color: purple;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+#find-course-icon {
+  width: 60px;
+  height: 50px;
+  color: purple;
+}

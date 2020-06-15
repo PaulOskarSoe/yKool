@@ -1,20 +1,21 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
-
-import { ListGroup, ListGroupItem } from "reactstrap";
-import CourseViewModal from "./CourseViewModal";
-
-import CourseFormModal from "./CourseFormModal";
-
-import { Button } from "reactstrap";
 import { UserContext } from "./../store/UserContextProvider";
+import { ListGroup, ListGroupItem, Button } from "reactstrap";
 import { FaTrashAlt } from "react-icons/fa";
+import { IoIosAddCircle } from "react-icons/io";
+import axios from "axios";
 import Swal from "sweetalert2";
+
+// SUBCOMPONENTS
+import CourseViewModal from "./components/CourseViewModal";
+import CourseFormModal from "./components/CourseFormModal";
+import FindCourseModal from "./components/FindCourseModal";
 
 export const CourseView = () => {
   const { user } = useContext(UserContext);
   const [courses, setCourses] = useState([]);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [courseModalVisible, setCourseModalVisible] = useState(false);
+  const [searchCourseModal, setSeachCourseModal] = useState(false);
   const [openCourse, setOpenCourse] = useState(false);
 
   const toggle = (item) => setOpenCourse(item.code);
@@ -24,6 +25,7 @@ export const CourseView = () => {
       let response;
       try {
         response = await axios(`/api/v1/courses/${user._id}`);
+        console.log("get courses: ", response);
         response && setCourses(response.data.data);
       } catch (error) {
         console.log("Error while fetching courses: ", error);
@@ -49,14 +51,28 @@ export const CourseView = () => {
 
   return (
     <div>
-      <Button color="primary" onClick={() => setModalVisible(true)}>
-        Lisa kursus
-      </Button>
-      <CourseFormModal
-        visible={modalVisible}
-        closeFn={setModalVisible}
-        setCourses={setCourses}
-      />
+      {user.role === 1 && (
+        <div>
+          <Button color="primary" onClick={() => setCourseModalVisible(true)}>
+            Lisa kursus
+          </Button>
+          <CourseFormModal
+            visible={courseModalVisible}
+            closeFn={setCourseModalVisible}
+            setCourses={setCourses}
+          />
+        </div>
+      )}
+      <div id="find-course-container" title="Otsi kursust">
+        <IoIosAddCircle
+          id="find-course-icon"
+          onClick={() => setSeachCourseModal(true)}
+        />
+        <FindCourseModal
+          showModal={searchCourseModal}
+          toggle={() => setSeachCourseModal(false)}
+        />
+      </div>
       {courses &&
         courses.map((item, index) => {
           return (
@@ -69,7 +85,11 @@ export const CourseView = () => {
               <ListGroup>
                 <ListGroupItem>
                   <label onClick={() => toggle(item)} style={{ width: "100%" }}>
-                    {item.name} {item.code} {item.description}
+                    {item && item.name && item.code && item.description && (
+                      <label>
+                        {item.name} {item.code} {item.description}
+                      </label>
+                    )}
                   </label>
 
                   {user.role === 1 && (
