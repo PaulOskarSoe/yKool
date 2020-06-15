@@ -77,9 +77,9 @@ export const FindCourseModal = ({ showModal, toggle }) => {
                       {course && course.name && course.code && (
                         <div>
                           <label>
-                            <h3>
+                            <h4>
                               {course.name}, {course.code}
-                            </h3>
+                            </h4>
                           </label>
                           <Button
                             style={{ float: "right" }}

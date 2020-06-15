@@ -1,12 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Modal, Button, ModalBody, ModalFooter, ModalHeader } from "reactstrap";
+import {
+  Modal,
+  Button,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
+  Badge,
+} from "reactstrap";
 import axios from "axios";
 import { UserContext } from "./../../store/UserContextProvider";
+
+import PendingStudentsModal from "./PendingStudentsModal";
 
 export const CourseViewModal = (props) => {
   const { user } = useContext(UserContext);
   const { openKey, toggleFn, data } = props;
   const [pendingRequests, setPendingRequests] = useState([]);
+  const [pengingRequestsModal, setPendingRequestsModal] = useState(false);
 
   // poll course requests in every 3 seconds if user is a teacher
   useEffect(() => {
@@ -38,15 +48,30 @@ export const CourseViewModal = (props) => {
     };
   }, []);
 
+  // handle grammar
+  const handleSinglar = pendingRequests.length > 1 && "t";
+
   return (
     <Modal isOpen={openKey === data.code} size="lg">
       <ModalHeader>{data.name}</ModalHeader>
       <ModalBody>
-        <div stlye={{ float: "right" }}>
-          {user.fullName} teil on {pendingRequests.length} uut soovijat
+        <div
+          style={{ cursor: "pointer" }}
+          onClick={() => setPendingRequestsModal(true)}
+        >
+          <h5>
+            {user.fullName}, teil on
+            <Badge color="info">{pendingRequests.length}</Badge> soovija
+            {handleSinglar} kursusele {data.name}
+          </h5>
           kursusele
         </div>
         <label>{data.description}</label>
+        <PendingStudentsModal
+          toggle={() => setPendingRequestsModal(false)}
+          modal={pengingRequestsModal}
+          pendingStudents={pendingRequests}
+        />
       </ModalBody>
       <ModalFooter>
         <Button color="primary" onClick={() => toggleFn(false)}>

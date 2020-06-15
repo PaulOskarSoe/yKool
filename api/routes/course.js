@@ -51,7 +51,6 @@ router.post("/new_course", async (req, res) => {
 router.get("/name/:courseName", async (req, res) => {
   if (!req.user)
     return res.status(401).json({ message: "Vajab autoriseerimist" });
-  console.log("course name: ", req.params.courseName);
   try {
     res.json(
       await Course.find({ name: { $regex: `.*${req.params.courseName}.*` } })
@@ -117,9 +116,7 @@ router.post("/request_access", async (req, res) => {
 
 // GET all access request which are made to a course
 router.get("/request_access/access/:courseId", async (req, res) => {
-  console.log("i got called");
   const { courseId } = req.params;
-  console.log("courseID: ", courseId);
   if (!req.user)
     return res.status(401).json({ message: "Vajab autoriseerimist" });
 

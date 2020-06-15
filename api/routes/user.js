@@ -78,4 +78,19 @@ router.get("/loggedin", (req, res) => {
   return res.status(401).json({ message: "You have to log in" });
 });
 
+router.get("/more_than_one", async (req, res) => {
+  console.log("users: ", req.body);
+  if (!req.user)
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
+  const { users } = req.body;
+  try {
+    const user = await User.find({ _id: { $in: users } });
+    if (user) {
+      res.json({ user });
+    }
+  } catch (error) {
+    console.log("there was an error", error);
+  }
+});
+
 module.exports = router;

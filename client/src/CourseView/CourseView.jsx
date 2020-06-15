@@ -25,7 +25,6 @@ export const CourseView = () => {
       let response;
       try {
         response = await axios(`/api/v1/courses/${user._id}`);
-        console.log("get courses: ", response);
         response && setCourses(response.data.data);
       } catch (error) {
         console.log("Error while fetching courses: ", error);
