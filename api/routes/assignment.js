@@ -3,6 +3,7 @@ const router = express.Router();
 
 const Assignment = require("./../models/Assignment");
 
+// CREATE a new assignment
 router.post("/new_assignment", async (req, res) => {
   if (!req.user)
     return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
@@ -40,6 +41,7 @@ router.post("/new_assignment", async (req, res) => {
   }
 });
 
+// DELETE assignment by assignment id
 router.delete("/:assignmentId", async (req, res) => {
   if (!req.user)
     return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
