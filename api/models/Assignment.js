@@ -5,7 +5,7 @@ const assignmentSchema = new mongoose.Schema({
   description: { type: String, required: false },
   endDate: { type: Date, required: false },
   createdAt: { type: Date, default: Date.now },
-  submissionID: { type: String, required: false },
+  submissionID: [{ type: String, required: false }],
   courseID: { type: String },
 });
 
