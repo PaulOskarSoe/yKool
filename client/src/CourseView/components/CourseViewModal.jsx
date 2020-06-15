@@ -42,7 +42,7 @@ export const CourseViewModal = (props) => {
       user.role === 1 &&
       setInterval(() => {
         user.role === 1 && getAllPendingRequest();
-      }, 3000);
+      }, 5000);
     return () => {
       clearInterval(interval);
     };
@@ -55,22 +55,25 @@ export const CourseViewModal = (props) => {
     <Modal isOpen={openKey === data.code} size="lg">
       <ModalHeader>{data.name}</ModalHeader>
       <ModalBody>
-        <div
-          style={{ cursor: "pointer" }}
-          onClick={() => setPendingRequestsModal(true)}
-        >
-          <h5>
-            {user.fullName}, teil on
-            <Badge color="info">{pendingRequests.length}</Badge> soovija
-            {handleSinglar} kursusele {data.name}
-          </h5>
-          kursusele
-        </div>
+        {user.role === 1 && (
+          <div
+            style={{ cursor: "pointer" }}
+            onClick={() => setPendingRequestsModal(true)}
+          >
+            <h5>
+              {user.fullName}, teil on
+              <Badge color="info">{pendingRequests.length}</Badge> soovija
+              {handleSinglar} kursusele {data.name}
+            </h5>
+            kursusele
+          </div>
+        )}
         <label>{data.description}</label>
         <PendingStudentsModal
           toggle={() => setPendingRequestsModal(false)}
           modal={pengingRequestsModal}
           pendingStudents={pendingRequests}
+          courseId={data._id}
         />
       </ModalBody>
       <ModalFooter>

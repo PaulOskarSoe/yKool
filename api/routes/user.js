@@ -78,13 +78,12 @@ router.get("/loggedin", (req, res) => {
   return res.status(401).json({ message: "You have to log in" });
 });
 
-router.get("/more_than_one", async (req, res) => {
-  console.log("users: ", req.body);
+router.post("/more_than_one", async (req, res) => {
   if (!req.user)
     return res.status(401).json({ message: "Vajab autoriseerimist" });
-  const { users } = req.body;
+  const { pendingStudents } = req.body;
   try {
-    const user = await User.find({ _id: { $in: users } });
+    const user = await User.find({ _id: { $in: pendingStudents } });
     if (user) {
       res.json({ user });
     }

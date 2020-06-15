@@ -149,17 +149,19 @@ router.post("/accept/request_access", async (req, res) => {
       .status(401)
       .json({ message: "Ainult õpetaja saab kursususele inimesi vastu võtta" });
 
-  const { courseId, userId, didAccept } = req.body;
-
+  const { courseId, didAccept, userId } = req.body;
+  console.log("body: ", req.body);
   if (!courseId || !userId)
     return res.status(403).json({ message: "Vajalikud väljad on puudu" });
   try {
     // add student to course
     if (didAccept) {
+      console.log("did accept!: ", didAccept);
       await Course.updateOne(
         { _id: courseId },
         { $push: { studentID: userId } }
       );
+      await User.updateOne({ _id: userId }, { $push: { courseID: courseId } });
     }
     // remove student from pending
     await Course.updateOne(
