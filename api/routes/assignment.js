@@ -6,9 +6,9 @@ const Assignment = require("./../models/Assignment");
 // CREATE a new assignment
 router.post("/new_assignment", async (req, res) => {
   if (!req.user)
-    return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
   if (req.user && req.user.role !== 1) {
-    return res.sendStatus(401).json({ message: "Kasutaja peab olema õpetaja" });
+    return res.status(401).json({ message: "Kasutaja peab olema õpetaja" });
   }
   const { userId, courseId, description, endDate } = req.body;
 
@@ -30,32 +30,30 @@ router.post("/new_assignment", async (req, res) => {
           return res.json({ message: "OK", data: doc });
         })
         .catch((err) =>
-          res
-            .sendStatus(400)
-            .json({ error: err, message: "Midagi läks valesti" })
+          res.status(400).json({ error: err, message: "Midagi läks valesti" })
         );
     }
   } catch (error) {
     console.log("error while creating an assignment", error);
-    return res.sendStatus(403).json({ error, message: "Midagi läks valesti" });
+    return res.status(403).json({ error, message: "Midagi läks valesti" });
   }
 });
 
 // DELETE assignment by assignment id
 router.delete("/:assignmentId", async (req, res) => {
   if (!req.user)
-    return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
   if (req.user && req.user.role !== 1) {
-    return res.sendStatus(401).json({ message: "Kasutaja peab olema õpetaja" });
+    return res.status(401).json({ message: "Kasutaja peab olema õpetaja" });
   }
 
   try {
     await Assignment.deleteOne({ _id: req.params.courseId });
     return res
-      .sendStatus(200)
+      .status(200)
       .json({ message: "Kustustamine oli edukas", data: deletedCourse });
   } catch (error) {
-    return res.sendStatus(403).json({ error, message: "Midagi läks valesti" });
+    return res.status(403).json({ error, message: "Midagi läks valesti" });
   }
 });
 

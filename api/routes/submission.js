@@ -7,7 +7,7 @@ const Submission = require("./../models/Submission");
 // GET all submissions by assignment id
 router.get("/:assignmentId", async (req, res) => {
   if (!req.user)
-    return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
 
   try {
     const { assignmentId } = req.params.assignmentId;
@@ -21,7 +21,7 @@ router.get("/:assignmentId", async (req, res) => {
     }
   } catch (error) {
     console.log("error while getting submissions by assignmentId: ", error);
-    return res.sendStatus(403).json({ error, message: "Midagi läks valesti" });
+    return res.status(403).json({ error, message: "Midagi läks valesti" });
   }
 });
 
@@ -31,9 +31,9 @@ router.post("/new_submission", async (req, res) => {
   const { submissionTitle, submissionContent, assignmentId } = req.body;
   // check permissions and for required fields
   if (!req.user)
-    return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
   if (!submissionTitle || !submissionContent || !userId || !assignmentId)
-    return res.sendStatus(401).json({ message: "Vajalikud väljad on puudu" });
+    return res.status(401).json({ message: "Vajalikud väljad on puudu" });
 
   const newSubmission = new Submission({
     userID: userId,
@@ -43,7 +43,7 @@ router.post("/new_submission", async (req, res) => {
   try {
     if (newSubmission) {
       newSubmission.save().catch((err) => {
-        return res.sendStatus(403).json({
+        return res.status(403).json({
           message: "Midagi läks valesti",
           error: err,
           code: 403,
@@ -60,7 +60,7 @@ router.post("/new_submission", async (req, res) => {
       }
     }
   } catch (error) {
-    return res.sendStatus(403).json({ error, message: "Midagi läks valesti" });
+    return res.status(403).json({ error, message: "Midagi läks valesti" });
   }
 });
 
@@ -68,12 +68,12 @@ router.post("/new_submission", async (req, res) => {
 router.post("/accept/:submissionId", async (req, res) => {
   const { submissionId } = req.params;
   if (!req.user)
-    return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
   if (req.user.role !== 1)
     return res
-      .sendStatus(401)
+      .status(401)
       .json({ message: "Ainult õpetaja saab vastuseid akspeteerida" });
-  if (!submissionId) return res.sendStatus(401);
+  if (!submissionId) return res.status(401);
   try {
     // set did accept to true
     const updatedSubmission = await Submission.updateOne(
@@ -85,7 +85,7 @@ router.post("/accept/:submissionId", async (req, res) => {
       return res.json({ message: "Vastus on aksepteeritud" });
     }
   } catch (error) {
-    return res.sendStatus(403).json({ message: "Vajalikud väljad on puudu" });
+    return res.status(403).json({ message: "Vajalikud väljad on puudu" });
   }
 });
 
