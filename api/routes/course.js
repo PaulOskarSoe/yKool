@@ -4,6 +4,7 @@ const router = express.Router();
 const User = require("./../models/User");
 const Course = require("./../models/Course");
 
+// CREATE a new course
 router.post("/new_course", async (req, res) => {
   const { name, code, description } = req.body;
   if (!req.user) return res.json({ message: "Needs auth", code: 401 });
@@ -47,8 +48,7 @@ router.post("/new_course", async (req, res) => {
   }
 });
 
-// we map all user courseIDs
-// we get all course objects by courseIDs, which are attached to user object
+// GET courses by userID
 router.get(`/:userId`, async (req, res) => {
   if (!req.user)
     return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
@@ -61,6 +61,7 @@ router.get(`/:userId`, async (req, res) => {
   }
 });
 
+// DELETE course by course ID
 router.delete("/:courseId", async (req, res) => {
   if (!req.user)
     return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
@@ -72,7 +73,6 @@ router.delete("/:courseId", async (req, res) => {
 
   try {
     const deletedCourse = await Course.deleteOne({ _id: req.params.courseId });
-    console.log("deleted course: ", deletedCourse);
     return res
       .sendStatus(200)
       .json({ message: "Kustustamine oli edukas", data: deletedCourse });
@@ -81,6 +81,7 @@ router.delete("/:courseId", async (req, res) => {
   }
 });
 
+// REQUEST access for a course
 router.post("/request_access", async (req, res) => {
   if (!req.user)
     return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
@@ -100,6 +101,7 @@ router.post("/request_access", async (req, res) => {
   }
 });
 
+// GET all access request which are made to a course
 router.get("/request_access", async (req, res) => {
   if (!req.user)
     return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
@@ -125,6 +127,7 @@ router.get("/request_access", async (req, res) => {
   }
 });
 
+// ACCEPT request access, which a student made to a course
 router.post("/accept/request_access", async (req, res) => {
   if (!req.user)
     return res.sendStatus(401).json({ message: "Vajab autoriseerimist" });
