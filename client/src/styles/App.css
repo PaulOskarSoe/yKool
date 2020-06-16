@@ -51,7 +51,7 @@ body {
 
 #course-box-img {
   width: 100%;
-  height: 100px;
+  height: 80px;
 }
 
 .dashboard-course-box {
@@ -59,7 +59,7 @@ body {
 }
 
 .dashboard-course-container {
-  width: 70%;
+  width: 60%;
   padding: 40px;
 }
 
@@ -69,13 +69,14 @@ body {
 }
 
 .calendar-container {
-  width: 30%;
+  width: 40%;
   padding: 40px;
   margin: 40px;
 }
 
 .react-calendar {
   position: fixed;
+  left: 60%;
 }
 
 .card {
@@ -86,7 +87,7 @@ body {
   max-width: 100%;
   margin: 20px;
   overflow: hidden;
-  width: 1000px;
+  width: 100%;
 }
 
 .btn.btn-secondary {
@@ -185,17 +186,6 @@ p.card-text {
 }
 
 .btn.btn-danger {
-  border: 0;
-  border-radius: 50px;
-  color: #fff;
-  font-size: 16px;
-  padding: 12px 25px;
-  letter-spacing: 1px;
-  margin: 1em;
-  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
-}
-
-.btn.btn-info {
   border: 0;
   border-radius: 50px;
   color: #fff;
