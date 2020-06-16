@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
   hash: { type: String, required: true },
   role: { type: Number, required: true },
-  couseID: [{ type: String }],
+  courseID: [{ type: String }],
   submissionID: [{ type: String }],
 });
 
