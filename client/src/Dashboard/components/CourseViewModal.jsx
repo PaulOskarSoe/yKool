@@ -13,7 +13,6 @@ import { UserContext } from "../../store/UserContextProvider";
 import PendingStudentsModal from "./PendingStudentsModal";
 import AssignmentModal from "./AssignmentModal";
 
-
 export const CourseViewModal = (props) => {
   const { user } = useContext(UserContext);
   const { openKey, toggleFn, course } = props;
@@ -83,11 +82,17 @@ export const CourseViewModal = (props) => {
       </ModalBody>
       <ModalFooter>
         <div>
-          <Button color="primary" onClick={() => setAssignmentvisibilty(true)}>
-            Lisa uus ülesanne
-          </Button>
+          {user.role === 1 && (
+            <Button
+              color="primary"
+              onClick={() => setAssignmentvisibilty(true)}
+            >
+              Lisa uus ülesanne
+            </Button>
+          )}
           <AssignmentModal
-            visible = {assignmentVisibilityModal} closeFn = {setAssignmentvisibilty}
+            visible={assignmentVisibilityModal}
+            closeFn={setAssignmentvisibilty}
             courseId={course._id}
           />
         </div>
