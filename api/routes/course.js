@@ -19,7 +19,7 @@ router.post("/new_course", async (req, res) => {
   try {
     if (newCourse) {
       await User.updateMany(
-        { _id: teacher._id },
+        { _id: req.user._id },
         { $push: { courseID: newCourse._id } }
       );
     }

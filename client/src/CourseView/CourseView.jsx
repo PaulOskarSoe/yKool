@@ -49,8 +49,10 @@ export const CourseView = () => {
 
   return (
     <div>
-      <Button color="primary" onClick={() => setModalVisible(true)}>
-        Lisa kursus
+      <Button color="primary" onClick={() => {
+        user.role === 1 ? setModalVisible(true) :
+          console.log("Student cannot see this modal")}}>
+        Lisa Kursus
       </Button>
       <CourseFormModal
         visible={modalVisible}

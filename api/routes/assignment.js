@@ -10,7 +10,8 @@ router.post("/new_assignment", async (req, res) => {
   if (req.user && req.user.role !== 1) {
     return res.sendStatus(401).json({ message: "Kasutaja peab olema õpetaja" });
   }
-  const { userId, courseId, description, endDate } = req.body;
+  const { courseId, description, endDate } = req.body;
+  const userId = req.user._id;
 
   if (!courseId || !userId || !description || !endDate)
     return res.sned(403).json({ message: "Vajalikud väljad on puudu" });
