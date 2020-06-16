@@ -74,9 +74,8 @@ body {
   margin: 40px;
 }
 
-.react-calendar {
+.react-calendar-timeline  {
   position: fixed;
-  left: 60%;
 }
 
 .card {
