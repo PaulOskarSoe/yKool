@@ -1,25 +1,38 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
+import axios from "axios";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input} from "reactstrap";
 
-
+/**
+vaja lisada assignmenti salvestus
+yhendada apiga
+ */
 
 const AssignmentModal = (props) => {
-    const { visible, closeFn } = props;
+    const { visible, closeFn, courseId } = props;
     const [description, setDescription] = useState();
     const [dueDate, setDueDate] = useState();
 
 
     const submitAssignment = async () => {
+        const body = {courseId: courseId, description: description, endDate: dueDate}
         if (!description || !dueDate) {
-            return Swal.fire({
-                icon: "error",
-                title: "Ülesande lisamine ebaõnnestus",
-                text: "Sisesta kirjeldus ja kuupäev",
-            });
+            return Swal.fire("Ülesande lisamine ebaõnnestus", "Sisesta kirjeldus ja kuupäev", "error");
         }
-
-        //siia veel siis kui on olemas inff
+        try {
+            const response = await axios.post(
+                "/api/v1/assignments/new_assignment",
+                body
+            );
+            if (response && response.status === 200) {
+                closeFn(false);
+                Swal.fire("Uus ülesanne on lisatud!", "", "success");
+            }
+        } catch (error) {
+            console.log(
+                "error while submiting assignment",
+                error)
+        }
 
     }
 
@@ -29,20 +42,21 @@ const AssignmentModal = (props) => {
             <ModalBody>
                 <Form>
                     <FormGroup>
-                        <Label for="description">Kirjeldus</Label>
+                        <Label for="assignmentDescription">Kirjeldus</Label>
                         <Input
-                            type="text"
+                            type="description"
                             name="description"
+                            id="assignmentDescription"
                             placeholder="sisesta siia ülesande kirjeldus"
                             onChange={(e) => setDescription(e.target.value)}
                         />
                     </FormGroup>
                     <FormGroup>
-                        <Label for="exampleDate">Kuupäev</Label>
+                        <Label for="dueDate">Kuupäev</Label>
                         <Input
                             type="date"
                             name="date"
-                            id="exampleDate"
+                            id="dueDate"
                             onChange={(e) => setDueDate(e.target.value)}
                         />
                     </FormGroup>

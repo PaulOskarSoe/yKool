@@ -12,8 +12,6 @@ import { UserContext } from "../../store/UserContextProvider";
 
 import PendingStudentsModal from "./PendingStudentsModal";
 import AssignmentModal from "./AssignmentModal";
-// const visibility state'i nt setAssignmentvisibilty
-//teen buttoni millega muudab visibility trueks
 
 
 export const CourseViewModal = (props) => {
@@ -21,8 +19,6 @@ export const CourseViewModal = (props) => {
   const { openKey, toggleFn, course } = props;
   const [pendingRequests, setPendingRequests] = useState([]);
   const [pengingRequestsModal, setPendingRequestsModal] = useState(false);
-  const [description, setDescription] = useState();
-  const [dueDate, setDueDate] = useState();
   const [assignmentVisibilityModal, setAssignmentvisibilty] = useState(false);
 
   // poll course requests in every 3 seconds if user is a teacher
@@ -92,6 +88,7 @@ export const CourseViewModal = (props) => {
           </Button>
           <AssignmentModal
             visible = {assignmentVisibilityModal} closeFn = {setAssignmentvisibilty}
+            courseId={course._id}
           />
         </div>
         <Button color="primary" onClick={() => toggleFn(false)}>
