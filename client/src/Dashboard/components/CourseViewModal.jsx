@@ -11,12 +11,15 @@ import axios from "axios";
 import { UserContext } from "../../store/UserContextProvider";
 
 import PendingStudentsModal from "./PendingStudentsModal";
+import AssignmentModal from "./AssignmentModal";
+
 
 export const CourseViewModal = (props) => {
   const { user } = useContext(UserContext);
   const { openKey, toggleFn, course } = props;
   const [pendingRequests, setPendingRequests] = useState([]);
   const [pengingRequestsModal, setPendingRequestsModal] = useState(false);
+  const [assignmentVisibilityModal, setAssignmentvisibilty] = useState(false);
 
   // poll course requests in every 3 seconds if user is a teacher
   useEffect(() => {
@@ -79,6 +82,15 @@ export const CourseViewModal = (props) => {
         />
       </ModalBody>
       <ModalFooter>
+        <div>
+          <Button color="primary" onClick={() => setAssignmentvisibilty(true)}>
+            Lisa uus ülesanne
+          </Button>
+          <AssignmentModal
+            visible = {assignmentVisibilityModal} closeFn = {setAssignmentvisibilty}
+            courseId={course._id}
+          />
+        </div>
         <Button color="primary" onClick={() => toggleFn(false)}>
           Tagasi
         </Button>{" "}
