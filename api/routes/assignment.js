@@ -58,4 +58,33 @@ router.delete("/:assignmentId", async (req, res) => {
   }
 });
 
+// //GET assignments by courseID
+router.get("/:courseId", async (req, res) => {
+  if (!req.user)
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
+  try {
+    const assignments = await Assignment.find({
+      courseId: req.params.courseId,
+    });
+    return res.json({ data: assignments, code: 200 });
+  } catch (error) {
+    return res.status(403).json({ error, message: "Midagi läks valesti" });
+  }
+});
+
+//GET assignments by array of courses
+router.get("/courses/array_courseID/", async (req, res) => {
+  if (!req.user)
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
+  try {
+    const courseId = req.query.courseId;
+    const allAssignments = await Assignment.find({
+      courseID: { $in: courseId },
+    });
+    if (allAssignments) return res.json({ data: allAssignments, code: 200 });
+  } catch (error) {
+    return res.status(403).json({ error, message: "Midagi läks valesti" });
+  }
+});
+
 module.exports = router;
