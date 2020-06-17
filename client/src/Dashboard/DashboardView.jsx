@@ -96,7 +96,7 @@ export const DashboardView = () => {
             );
           })}
       </div>
-      <CalendarContainer courses={courses}/>
+      <CalendarContainer courses={courses} />
     </div>
   );
 };
