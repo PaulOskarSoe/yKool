@@ -12,10 +12,10 @@ router.post("/new_assignment", async (req, res) => {
   }
   const userId = req.user._id;
   const { courseId, description, endDate } = req.body;
-
+  
   if (!courseId || !userId || !description || !endDate)
     return res.sned(403).json({ message: "Vajalikud väljad on puudu" });
-
+  
   try {
     const newAssignment = await new Assignment({
       creatorID: userId,
@@ -47,7 +47,7 @@ router.delete("/:assignmentId", async (req, res) => {
   if (req.user && req.user.role !== 1) {
     return res.status(401).json({ message: "Kasutaja peab olema õpetaja" });
   }
-
+  
   try {
     await Assignment.deleteOne({ _id: req.params.courseId });
     return res

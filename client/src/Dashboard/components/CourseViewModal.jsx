@@ -11,17 +11,20 @@ import {
 } from "reactstrap";
 import axios from "axios";
 import { UserContext } from "../../store/UserContextProvider";
+import moment from "moment";
 
 import PendingStudentsModal from "./PendingStudentsModal";
 import AssignmentModal from "./AssignmentModal";
+import SubmissionModal from "./SubmissionModal";
 
 export const CourseViewModal = (props) => {
   const { user } = useContext(UserContext);
   const { openKey, toggleFn, course } = props;
   const [pendingRequests, setPendingRequests] = useState([]);
+  const [assignments, setAssignments] = useState([]);
   const [pengingRequestsModal, setPendingRequestsModal] = useState(false);
   const [assignmentVisibilityModal, setAssignmentvisibilty] = useState(false);
-  const [assignments, setAssignments] = useState([]);
+  const [submissionModalVisible, setSubmissionModalVisible] = useState(false);
 
   // poll course requests in every 3 seconds if user is a teacher
   useEffect(() => {
@@ -88,10 +91,9 @@ export const CourseViewModal = (props) => {
               {handleSinglar} kursusele{" "}
               <Badge color="info">{course.name}</Badge>
             </h5>
-            kursusele
           </div>
         )}
-        <label>{course.description}</label>
+        <label>Kursuse kirjeldus: {course.description}</label>
         <PendingStudentsModal
           toggle={() => setPendingRequestsModal(false)}
           modal={pengingRequestsModal}
@@ -105,22 +107,57 @@ export const CourseViewModal = (props) => {
               <div key={index}>
                 <ListGroup>
                   <ListGroupItem>
-                    <label style={{ width: "100%" }}>
-                      {assignment &&
-                        assignment.description &&
-                        assignment.endDate && (
-                          <div>
-                            <label>
-                              <h5>
-                                {assignment.description} -{" "}
-                                {assignment.endDate.substring(0, 10)}
-                              </h5>
-                            </label>
-                          </div>
-                        )}
-                    </label>
+                    <div style={{ width: "100%" }}>
+                      <h5>
+                        {assignment.description}{" "}
+                        <div style={{ float: "right" }}>
+                          <Button
+                            style={{
+                              backgroundColor: "#5cb85c",
+                              color: "white",
+                            }}
+                            onClick={() => setSubmissionModalVisible(true)}
+                          >
+                            Esita kodutöö
+                          </Button>{" "}
+                        </div>
+                        <div
+                          style={{
+                            marginTop: "50px",
+                            width: "100%",
+                          }}
+                        >
+                          <Badge
+                            style={{
+                              height: "35px",
+                              borderRadius: "10px",
+                              width: "100%",
+                              position: "flex",
+                            }}
+                            color="warning"
+                          >
+                            <p
+                              style={{
+                                color: "white",
+                                marginTop: "6px",
+                              }}
+                            >
+                              Tähtpäev:{" "}
+                              {moment(assignment.endDate).format("DD-MM-YYYY")}
+                            </p>
+                          </Badge>
+                        </div>
+                      </h5>
+                    </div>
                   </ListGroupItem>
                 </ListGroup>
+                <div>
+                  <SubmissionModal
+                    visible={submissionModalVisible}
+                    closeFn={setSubmissionModalVisible}
+                    assignmentId={assignment._id}
+                  />
+                </div>
               </div>
             );
           })}
@@ -131,6 +168,7 @@ export const CourseViewModal = (props) => {
             <Button
               color="primary"
               onClick={() => setAssignmentvisibilty(true)}
+              style={{ backgroundColor: "#f0ad4e", color: "white" }}
             >
               Lisa uus ülesanne
             </Button>
