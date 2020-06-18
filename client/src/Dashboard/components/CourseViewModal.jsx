@@ -14,14 +14,16 @@ import { UserContext } from "../../store/UserContextProvider";
 
 import PendingStudentsModal from "./PendingStudentsModal";
 import AssignmentModal from "./AssignmentModal";
+import SubmissionModal from "./SubmissionModal";
 
 export const CourseViewModal = (props) => {
   const { user } = useContext(UserContext);
   const { openKey, toggleFn, course } = props;
   const [pendingRequests, setPendingRequests] = useState([]);
+  const [assignments, setAssignments] = useState([]);
   const [pengingRequestsModal, setPendingRequestsModal] = useState(false);
   const [assignmentVisibilityModal, setAssignmentvisibilty] = useState(false);
-  const [assignments, setAssignments] = useState([]);
+  const [ submissionModalVisible, setSubmissionModalVisible] = useState(false);
 
   // poll course requests in every 3 seconds if user is a teacher
   useEffect(() => {
@@ -115,6 +117,11 @@ export const CourseViewModal = (props) => {
                           <label>
                             <h5>
                               {assignment.description} - {(assignment.endDate).substring(0,10)}
+                              <div>
+                                {user.role === 2 && (
+                                  <Button onClick={() => setSubmissionModalVisible(true)}>Esita kodutöö</Button>
+                                  )}
+                              </div>
                             </h5>
                           </label>
                         </div>
@@ -122,6 +129,13 @@ export const CourseViewModal = (props) => {
                     </label>
                   </ListGroupItem>
                 </ListGroup>
+                  <div>
+                    <SubmissionModal
+                      visible={submissionModalVisible}
+                      closeFn={setSubmissionModalVisible}
+                      assignmentId={assignment._id}
+                    />
+                  </div>
               </div>
             )
           })}
