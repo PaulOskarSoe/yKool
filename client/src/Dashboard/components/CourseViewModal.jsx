@@ -27,21 +27,17 @@ export const CourseViewModal = (props) => {
   useEffect(() => {
     const fetchCourseAssignments = async () => {
       try {
-        const response = await axios.get(
-          "/api/v1/assignments/" + course._id
-        );
-        if(response && response.status ===200)
+        const response = await axios.get("/api/v1/assignments/" + course._id);
+        if (response && response.status === 200)
           setAssignments(response.data.data);
-          console.log("fetching assignments: OK", response)
+        console.log("fetching assignments: OK", response);
       } catch (error) {
-        console.log(
-          "error while fetching assignments",
-          error.response)
+        console.log("error while fetching assignments", error.response);
       }
-    }
+    };
 
-//pean selle data nyyd alla lahtima mapima, paulil endal ka palju näiteid, vaata seda pending requesti vb idk. 
-//pending studentsmodalis ka vb veidi ilusam map olemas, vaata seda ka
+    //pean selle data nyyd alla lahtima mapima, paulil endal ka palju näiteid, vaata seda pending requesti vb idk.
+    //pending studentsmodalis ka vb veidi ilusam map olemas, vaata seda ka
 
     const getAllPendingRequest = async () => {
       try {
@@ -59,7 +55,7 @@ export const CourseViewModal = (props) => {
       }
     };
     fetchCourseAssignments();
-    
+
     user.role === 1 && getAllPendingRequest();
     let interval;
     // get all pending requests in every 3 seconds
@@ -110,20 +106,23 @@ export const CourseViewModal = (props) => {
                 <ListGroup>
                   <ListGroupItem>
                     <label style={{ width: "100%" }}>
-                      {assignment && assignment.description && assignment.endDate && (
-                        <div>
-                          <label>
-                            <h5>
-                              {assignment.description} - {(assignment.endDate).substring(0,10)}
-                            </h5>
-                          </label>
-                        </div>
-                      )}
+                      {assignment &&
+                        assignment.description &&
+                        assignment.endDate && (
+                          <div>
+                            <label>
+                              <h5>
+                                {assignment.description} -{" "}
+                                {assignment.endDate.substring(0, 10)}
+                              </h5>
+                            </label>
+                          </div>
+                        )}
                     </label>
                   </ListGroupItem>
                 </ListGroup>
               </div>
-            )
+            );
           })}
       </ModalBody>
       <ModalFooter>
@@ -140,6 +139,7 @@ export const CourseViewModal = (props) => {
             visible={assignmentVisibilityModal}
             closeFn={setAssignmentvisibilty}
             courseId={course._id}
+            setAssignments={setAssignments}
           />
         </div>
         <Button color="primary" onClick={() => toggleFn(false)}>
