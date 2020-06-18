@@ -6,6 +6,8 @@ import {
   ModalFooter,
   ModalHeader,
   Badge,
+  ListGroup,
+  ListGroupItem,
 } from "reactstrap";
 import axios from "axios";
 import { UserContext } from "../../store/UserContextProvider";
@@ -19,9 +21,28 @@ export const CourseViewModal = (props) => {
   const [pendingRequests, setPendingRequests] = useState([]);
   const [pengingRequestsModal, setPendingRequestsModal] = useState(false);
   const [assignmentVisibilityModal, setAssignmentvisibilty] = useState(false);
+  const [assignments, setAssignments] = useState([]);
 
   // poll course requests in every 3 seconds if user is a teacher
   useEffect(() => {
+    const fetchCourseAssignments = async () => {
+      try {
+        const response = await axios.get(
+          "/api/v1/assignments/" + course._id
+        );
+        if(response && response.status ===200)
+          setAssignments(response.data.data);
+          console.log("fetching assignments: OK", response)
+      } catch (error) {
+        console.log(
+          "error while fetching assignments",
+          error.response)
+      }
+    }
+
+//pean selle data nyyd alla lahtima mapima, paulil endal ka palju näiteid, vaata seda pending requesti vb idk. 
+//pending studentsmodalis ka vb veidi ilusam map olemas, vaata seda ka
+
     const getAllPendingRequest = async () => {
       try {
         const response = await axios.get(
@@ -37,6 +58,8 @@ export const CourseViewModal = (props) => {
         );
       }
     };
+    fetchCourseAssignments();
+    
     user.role === 1 && getAllPendingRequest();
     let interval;
     // get all pending requests in every 3 seconds
@@ -79,6 +102,29 @@ export const CourseViewModal = (props) => {
           pendingStudents={pendingRequests}
           courseId={course._id}
         />
+        <h4>Kodutööd:</h4>
+        {assignments &&
+          assignments.map((assignment, index) => {
+            return (
+              <div key={index}>
+                <ListGroup>
+                  <ListGroupItem>
+                    <label style={{ width: "100%" }}>
+                      {assignment && assignment.description && assignment.endDate && (
+                        <div>
+                          <label>
+                            <h5>
+                              {assignment.description} - {(assignment.endDate).substring(0,10)}
+                            </h5>
+                          </label>
+                        </div>
+                      )}
+                    </label>
+                  </ListGroupItem>
+                </ListGroup>
+              </div>
+            )
+          })}
       </ModalBody>
       <ModalFooter>
         <div>
