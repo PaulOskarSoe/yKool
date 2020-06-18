@@ -139,8 +139,7 @@ export const CourseViewModal = (props) => {
                             <p
                               style={{
                                 color: "white",
-                                marginTop: "6x",
-                                fontSize: "15px",
+                                marginTop: "6px",
                               }}
                             >
                               Tähtpäev:{" "}
