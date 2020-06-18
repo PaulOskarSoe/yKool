@@ -58,4 +58,17 @@ router.delete("/:assignmentId", async (req, res) => {
   }
 });
 
+//GET assignments by courseID
+
+router.get("/:courseId", async (req, res) => {
+  if(!req.user._id)
+    return res.status(401).json({ message: "Vajab autoriseerimist" });
+  try {
+    const assignments = await Assignment.find({courseID: req.params.courseId});
+    return res.json({data: assignments, code: 200 });
+  } catch (error) {
+    return res.status(403).json({error, message: "Midagi läks valesti" });
+  }
+});
+
 module.exports = router;
