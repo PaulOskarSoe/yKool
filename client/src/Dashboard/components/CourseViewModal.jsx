@@ -114,7 +114,7 @@ export const CourseViewModal = (props) => {
                         <div>
                           <label>
                             <h5>
-                              {assignment.description}, {assignment.endDate}
+                              {assignment.description} - {assignment.endDate}
                             </h5>
                           </label>
                         </div>
