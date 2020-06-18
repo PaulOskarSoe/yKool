@@ -41,4 +41,4 @@ npm start
 ```
 
 ## Litsents
-Antud projektil on MIT litsents - vaata [LICENSE fail](LICENSE) täpsema info jaoks.
+Antud projektil on MIT litsents - vaata [LICENSE](LICENSE) faili täpsema info jaoks.
