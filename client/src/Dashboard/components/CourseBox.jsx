@@ -50,7 +50,7 @@ const CourseBox = ({ course, index, courses, setCourses }) => {
           <CardTitle>{course.name}</CardTitle>
           <CardSubtitle>{course.code}</CardSubtitle>
           <CardText>{course.description}</CardText>
-          <Button onClick={() => setModal(true)}>Vaata</Button>
+          <Button className="course-box" onClick={() => setModal(true)}>Vaata</Button>
         </CardBody>
         <CardFooter>
           {user.role === 1 && (
