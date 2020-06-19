@@ -16,6 +16,19 @@
 ![sisselogimine](Screenshot_login.png)
 ![dashboard](Screenshot_dashboard.png)
 
+
+## Testimise dokumentatsioon
+
+### Kasutaja loomine ja autoriseerimine
+
+| Testi lugu        | Ootatud tulemus          | Tegelik tulemus  | Kas läbis  |
+| ------------- |:-------------:| -----:|
+| Kasutaja loomine html input väärtustega      | html input väärtustega luuakse andmebaasi kasutaja | html input väärtustega luuakse andmebaasi kasutaja | jah |
+| Parooli hashimine      | parooli tekst hashitakse pikaks stringiks      |   parooli tekst hashitakse pikaks stringiks | jah |
+| Kasutaja sisselogimine õigete input väärtustel | Kasutaja logitakse sisse      |   Kasutaja logitakse sisse | jah | 
+| Sisselogimise input väljade valideerimine, kui puudub väärtus väljale, siis kuvatakse error message | Saadeti error message, et vajalik väli on puudu      |   Saadeti error message, et vajalik väli on puudu | jah | 
+
+
 ## Kasutatud tehnoloogiad ja nende versioonid
 
 - MonoDB
