@@ -19,7 +19,7 @@
 
 ## Kasutatud tehnoloogiad ja nende versioonid
 
-- MonoDB
+- MongoDB
 - expressJS
 - ReactJS
 - NodeJS
