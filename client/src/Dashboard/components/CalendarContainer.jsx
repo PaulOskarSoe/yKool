@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Timeline from "react-calendar-timeline";
 import "react-calendar-timeline/lib/Timeline.css";
 import moment from "moment";
+import "moment/locale/et"
 import axios from "axios";
 
 const CalendarContainer = ({ courses }) => {
@@ -59,8 +60,8 @@ const CalendarContainer = ({ courses }) => {
       <Timeline
         groups={groupCourses}
         items={groupAssignments}
-        defaultTimeStart={moment().add(-3, "day")}
-        defaultTimeEnd={moment().add(4, "day")}
+        defaultTimeStart={moment().add(-4, "day")}
+        defaultTimeEnd={moment().add(3, "day")}
         lineHeight={100}
       />
     </div>

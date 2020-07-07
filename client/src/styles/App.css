@@ -126,6 +126,8 @@ body {
   letter-spacing: 1px;
   margin: 10px 0;
   font-size: 1.5em;
+  margin-bottom: 1.5rem !important;
+  font-weight: bold;
 }
 
 .card-subtitle {
@@ -133,6 +135,7 @@ body {
   margin: 0;
   letter-spacing: 1px;
   text-transform: uppercase;
+  font-weight: bold;
 }
 
 p.card-text {
@@ -201,4 +204,14 @@ p.card-text {
 
 .react-calendar-timeline .rct-header-root {
   background: #007bff !important;
+}
+
+.modal-header {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  font-weight: bold;
 }
